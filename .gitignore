@@ -1,0 +1,47 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+!frontend/dist/
+*.db
+build/
+*.egg
+.venv/
+python-embed/
+venv/
+env/
+
+# Django
+*.sqlite3
+*.bak
+staticfiles/
+media/
+
+# Node
+node_modules/
+frontend/node_modules/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+*.env.local
+
+# Local development
+*.zip
+ python-installer.exe
+ get-pip.py
+ python-embed.zip
+*.bat
+*.ps1
+

@@ -1,0 +1,60 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}员工管理{% endblock %}
+{% block breadcrumb %}员工管理{% endblock %}
+{% block content %}
+<div class="page-header"><h1>员工信息</h1>
+<form method="get" style="display:flex;gap:8px;"><input type="text" name="search" class="form-control" placeholder="搜索" style="width:240px" value="{{ request.GET.search }}"><button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-search"></i></button></form>
+<a href="javascript:void(0)" onclick="showAddEmp()" class="btn btn-primary"><i class="fas fa-user-plus"></i> 添加员工</a>
+<a href="javascript:void(0)" onclick="showBatchImport()" class="btn btn-success"><i class="fas fa-upload"></i> 批量导入</a></div>
+<div class="card"><div class="table-wrap"><table><thead><tr><th>姓名</th><th>电话</th><th>性别</th><th>岗位</th><th>部门</th><th>分公司</th><th>状态</th><th>操作</th></tr></thead>
+<tbody>{% for emp in employees %}<tr><td><strong>{{ emp.name }}</strong></td><td>{{ emp.phone|default:"-" }}</td><td>{{ emp.get_gender_display|default:"-" }}</td><td>{{ emp.position|default:"-" }}</td><td>{{ emp.department|default:"-" }}</td><td>{{ emp.branch.name|default:"-" }}</td><td><span class="badge {% if emp.status == 'assessed' %}badge-success{% elif emp.status == 'pending' %}badge-warning{% else %}badge-secondary{% endif %}">{{ emp.get_status_display }}</span></td><td><form method="post" action="{% url 'dashboard:employee_delete' emp.pk %}" onsubmit="return confirm('确定删除？')" style="display:inline;">{% csrf_token %}<button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button></form></td></tr>{% empty %}<tr><td colspan="8"><div class="empty-state"><i class="fas fa-users"></i><p>暂无员工</p></div></td></tr>{% endfor %}</tbody></table></div></div>
+
+<!-- Add Employee Modal -->
+<div id="addEmpModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:2000;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;">
+<div style="background:#fff;border-radius:10px;padding:28px;width:460px;max-width:95vw;box-shadow:0 8px 32px rgba(0,0,0,0.2);">
+<h3 style="font-size:18px;margin-bottom:16px;">添加员工</h3>
+<form method="post" action="{% url 'dashboard:employee_create' %}">
+{% csrf_token %}
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+<div><label style="font-size:13px;font-weight:500;">姓名 *</label><input type="text" name="name" required class="form-control" placeholder="请输入姓名"></div>
+<div><label style="font-size:13px;font-weight:500;">性别</label><select name="gender" class="form-control"><option value="male">男</option><option value="female">女</option></select></div>
+<div><label style="font-size:13px;font-weight:500;">电话</label><input type="text" name="phone" class="form-control" placeholder="手机号"></div>
+<div><label style="font-size:13px;font-weight:500;">邮箱</label><input type="email" name="email" class="form-control" placeholder="邮箱"></div>
+<div><label style="font-size:13px;font-weight:500;">岗位</label><input type="text" name="position" class="form-control" placeholder="如 销售"></div>
+<div><label style="font-size:13px;font-weight:500;">部门</label><input type="text" name="department" class="form-control" placeholder="部门"></div>
+<div><label style="font-size:13px;font-weight:500;">分公司</label><select name="branch" class="form-control">{% for b in branches %}<option value="{{ b.id }}">{{ b.name }}</option>{% endfor %}</select></div>
+</div>
+<div style="margin-top:16px;text-align:right;">
+<button type="button" onclick="closeAddEmp()" style="padding:8px 20px;background:#fff;border:1px solid #ddd;border-radius:4px;cursor:pointer;">取消</button>
+<button type="submit" style="padding:8px 20px;background:#0a2463;color:#fff;border:none;border-radius:4px;cursor:pointer;margin-left:8px;font-weight:600;">保存</button>
+</div>
+</form>
+</div>
+</div>
+
+<!-- Batch Import Modal -->
+<div id="batchImportModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:2000;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;">
+<div style="background:#fff;border-radius:10px;padding:28px;width:640px;max-width:95vw;box-shadow:0 8px 32px rgba(0,0,0,0.2);">
+<h3 style="font-size:18px;margin-bottom:16px;">批量导入员工</h3>
+<p style="font-size:13px;color:#888;margin-bottom:16px;">请输入多个员工信息，每行一个，格式：部门名称,姓名,性别(男/女),岗位,电话,邮箱</p>
+<form method="post" action="{% url 'dashboard:batch_import' %}">
+{% csrf_token %}
+<div><label style="font-size:13px;font-weight:500;">分公司</label>
+<select name="branch" class="form-control" style="margin-bottom:12px;">{% for b in branches %}<option value="{{ b.id }}">{{ b.name }}</option>{% endfor %}</select></div>
+<div><label style="font-size:13px;font-weight:500;">员工列表</label>
+<textarea name="employees_data" rows="10" class="form-control" placeholder="例如\:&#10;人力资源部,张三,男,人力专员,13800138001,zhangsan@company.com&#10;销售部,李四,女,销售经理,13800138002,lisi@company.com" style="font-family:monospace;"></textarea></div>
+<div style="margin-top:16px;text-align:right;">
+<button type="button" onclick="closeBatchImport()" style="padding:8px 20px;background:#fff;border:1px solid #ddd;border-radius:4px;cursor:pointer;">取消</button>
+<button type="submit" style="padding:8px 20px;background:#0a2463;color:#fff;border:none;border-radius:4px;cursor:pointer;margin-left:8px;font-weight:600;">导入</button>
+</div>
+</form>
+</div>
+</div>
+
+<script>
+function showAddEmp() { document.getElementById('addEmpModal').style.display = 'flex'; }
+function closeAddEmp() { document.getElementById('addEmpModal').style.display = 'none'; }
+function showBatchImport() { document.getElementById('batchImportModal').style.display = 'flex'; }
+function closeBatchImport() { document.getElementById('batchImportModal').style.display = 'none'; }
+</script>
+{% endblock %}

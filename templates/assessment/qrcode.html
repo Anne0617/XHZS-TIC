@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>扫码测评 - 统考入口</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#f0f4f8;color:#1e293b;padding:40px 20px;}
+.header{text-align:center;margin-bottom:36px;}
+.header h1{font-size:22px;color:#0a2463;margin-bottom:4px;}
+.header p{font-size:13px;color:#94a3b8;}
+.grid{max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;}
+.qr-card{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:24px;text-align:center;}
+.qr-card .badge{display:inline-block;padding:3px 12px;border-radius:12px;font-size:11px;font-weight:600;color:#fff;margin-bottom:8px;}
+.qr-card h3{font-size:14px;margin-bottom:4px;}
+.qr-card .duration{font-size:11px;color:#94a3b8;margin-bottom:12px;}
+.qr-card .qr-img{width:160px;height:160px;margin:0 auto 8px;padding:4px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;}
+.qr-card .qr-img img{width:100%;height:100%;object-fit:contain;}
+.qr-card .link{font-size:11px;color:#3b82f6;word-break:break-all;}
+.qr-card .link a{color:#3b82f6;text-decoration:none;}
+.qr-card .link a:hover{text-decoration:underline;}
+@media print{.header{margin-bottom:24px}body{padding:20px}.qr-card{break-inside:avoid}}
+</style></head>
+<body>
+<div class="header">
+<h1>智善TIC人才测评体系</h1>
+<p>扫描对应二维码进入各考试入口</p>
+</div>
+<div class="grid">
+{% for t in exam_templates %}
+<div class="qr-card">
+<div class="badge" style="background:{% if t.exam_type == 'comprehensive' %}#2563eb{% elif t.exam_type == 'bigfive' %}#7c3aed{% elif t.exam_type == 'pdp' %}#ea580c{% elif t.exam_type == 'mbti' %}#0891b2{% else %}#64748b{% endif %};">{{ t.name }}</div>
+<h3>{{ t.name }}</h3>
+<div class="duration">{{ t.estimated_minutes }} 分钟</div>
+<div class="qr-img">
+<img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data={{ site_url }}/assessment/enter/{{ t.exam_type }}/" alt="{{ t.name }}" />
+</div>
+<div class="link"><a href="/assessment/enter/{{ t.exam_type }}/" target="_blank">/assessment/enter/{{ t.exam_type }}/</a></div>
+</div>
+{% endfor %}
+</div>
+</body></html>

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>智善人才测评 - 成就企业人才价值</title>
+<link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+<style>
+:root {
+  --gold: #c9a96e;
+  --gold-light: #d4af37;
+  --gold-dark: #a8884d;
+  --gold-soft: #f5e6cc;
+  --navy: #1a2332;
+  --navy-light: #2c3e50;
+  --cream: #faf6f0;
+  --cream-light: #fdfbf9;
+  --warm-bg: #f8f4ef;
+  --text: #2c3e50;
+  --text-light: #6b7a8a;
+  --text-warm: #5a4a3a;
+  --border: #e8e0d6;
+  --shadow: 0 4px 24px rgba(26,35,50,0.06);
+  --shadow-hover: 0 8px 40px rgba(26,35,50,0.10);
+  --radius: 12px;
+  --font-serif: 'Noto Serif SC', 'STSong', 'SimSun', 'Georgia', serif;
+  --font-sans: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --transition: all 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { font-family:var(--font-sans); color:var(--text); background:var(--cream-light); line-height:1.7; overflow-x:hidden; }
+img { max-width:100%; height:auto; }
+
+/* Navigation */
+.navbar { position:fixed; top:0; left:0; right:0; z-index:1000; background:rgba(26,35,50,0.92); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-bottom:1px solid rgba(255,255,255,0.06); transition:var(--transition); }
+.navbar.scrolled { background:rgba(26,35,50,0.96); box-shadow:0 2px 20px rgba(0,0,0,0.15); }
+.nav-inner { max-width:1200px; margin:0 auto; padding:0 24px; height:72px; display:flex; align-items:center; justify-content:space-between; }
+.nav-brand { display:flex; align-items:center; gap:10px; text-decoration:none; }
+.nav-brand .logo-icon { width:36px; height:36px; background:linear-gradient(135deg,var(--gold),var(--gold-dark)); border-radius:8px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:18px; font-weight:700; }
+.nav-brand span { font-size:18px; font-weight:700; color:#fff; letter-spacing:1px; }
+.nav-brand small { font-size:11px; color:var(--gold); letter-spacing:2px; display:block; margin-top:-2px; font-weight:400; }
+.nav-links { display:flex; align-items:center; gap:4px; }
+.nav-links a { padding:8px 18px; border-radius:6px; color:rgba(255,255,255,0.75); text-decoration:none; font-size:14px; font-weight:500; transition:var(--transition); letter-spacing:0.5px; }
+.nav-links a:hover { color:#fff; background:rgba(255,255,255,0.06); }
+.nav-links a.nav-cta { background:var(--gold); color:var(--navy); font-weight:600; padding:8px 20px; }
+.nav-links a.nav-cta:hover { background:var(--gold-light); }
+.nav-toggle { display:none; background:none; border:none; color:#fff; font-size:24px; cursor:pointer; padding:4px; }
+
+/* Hero */
+.hero { min-height:100vh; display:flex; align-items:center; position:relative; background:linear-gradient(135deg,#1a2332 0%,#2c3e50 40%,#3d4f64 100%); overflow:hidden; padding:120px 24px 80px; }
+.hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 20% 50%,rgba(201,169,110,0.08) 0%,transparent 60%),radial-gradient(ellipse at 80% 50%,rgba(201,169,110,0.05) 0%,transparent 50%); pointer-events:none; }
+.hero::after { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(201,169,110,0.3),transparent); }
+.hero-inner { max-width:1200px; margin:0 auto; width:100%; position:relative; z-index:1; }
+.hero-badge { display:inline-block; padding:6px 18px; border:1px solid rgba(201,169,110,0.3); border-radius:20px; color:var(--gold); font-size:12px; letter-spacing:2px; margin-bottom:24px; font-weight:500; }
+.hero h1 { font-family:var(--font-serif); font-size:52px; font-weight:700; color:#fff; line-height:1.25; margin-bottom:20px; max-width:700px; letter-spacing:-0.5px; }
+.hero h1 em { color:var(--gold); font-style:normal; }
+.hero p { font-size:17px; color:rgba(255,255,255,0.65); max-width:560px; line-height:1.8; margin-bottom:36px; }
+.hero-actions { display:flex; gap:16px; flex-wrap:wrap; }
+.hero-actions .btn { display:inline-flex; align-items:center; gap:10px; padding:14px 34px; border-radius:8px; font-size:15px; font-weight:600; text-decoration:none; transition:var(--transition); cursor:pointer; }
+.hero-actions .btn-primary { background:var(--gold); color:var(--navy); }
+.hero-actions .btn-primary:hover { background:var(--gold-light); transform:translateY(-2px); box-shadow:0 8px 30px rgba(201,169,110,0.25); }
+.hero-actions .btn-outline { border:1.5px solid rgba(255,255,255,0.2); color:#fff; background:transparent; }
+.hero-actions .btn-outline:hover { border-color:var(--gold); color:var(--gold); background:rgba(201,169,110,0.08); }
+.hero-stats { display:flex; gap:48px; margin-top:64px; padding-top:48px; border-top:1px solid rgba(255,255,255,0.06); }
+.hero-stats .stat h3 { font-size:36px; font-weight:700; color:var(--gold); font-family:var(--font-serif); }
+.hero-stats .stat p { font-size:13px; color:rgba(255,255,255,0.45); margin:0; letter-spacing:0.5px; }
+
+/* Section common */
+.section { padding:100px 24px; }
+.section-alt { background:var(--warm-bg); }
+.section-dark { background:linear-gradient(135deg,#1a2332,#2c3e50); }
+.inner { max-width:1200px; margin:0 auto; }
+.section-label { display:inline-block; font-size:11px; font-weight:600; color:var(--gold); text-transform:uppercase; letter-spacing:3px; margin-bottom:12px; }
+.section-title { font-family:var(--font-serif); font-size:36px; font-weight:700; color:var(--text); margin-bottom:16px; line-height:1.3; }
+.section-title.light { color:#fff; }
+.section-subtitle { font-size:16px; color:var(--text-light); max-width:600px; line-height:1.8; }
+.section-subtitle.light { color:rgba(255,255,255,0.6); }
+.section-header { text-align:center; margin-bottom:60px; }
+.section-header .section-subtitle { margin:0 auto; }
+
+/* 产品 */
+.product-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+.product-card { background:#fff; border-radius:var(--radius); padding:40px 32px; transition:var(--transition); border:1px solid var(--border); position:relative; overflow:hidden; }
+.product-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold)); opacity:0; transition:var(--transition); }
+.product-card:hover::before { opacity:1; }
+.product-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-hover); }
+.product-card .icon { width:52px; height:52px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:20px; color:#fff; }
+.product-card h3 { font-family:var(--font-serif); font-size:20px; margin-bottom:10px; }
+.product-card p { color:var(--text-light); font-size:14px; line-height:1.7; margin-bottom:16px; }
+.product-card .features { list-style:none; padding:0; }
+.product-card .features li { padding:6px 0; font-size:13px; color:var(--text-light); display:flex; align-items:center; gap:8px; }
+.product-card .features li i { color:var(--gold); font-size:12px; }
+
+/* 解决方案 */
+.solution-grid { display:grid; gap:20px; }
+.solution-row { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; padding:24px 0; }
+.solution-row + .solution-row { border-top:1px solid var(--border); }
+.solution-row.reverse { direction:rtl; }
+.solution-row.reverse > * { direction:ltr; }
+.solution-visual { background:linear-gradient(135deg,rgba(201,169,110,0.08),rgba(201,169,110,0.02)); border-radius:var(--radius); padding:48px 40px; border:1px solid var(--border); min-height:280px; display:flex; flex-direction:column; justify-content:center; }
+.solution-visual .big-icon { font-size:48px; color:var(--gold); margin-bottom:16px; }
+.solution-visual h4 { font-family:var(--font-serif); font-size:22px; margin-bottom:8px; }
+.solution-visual p { color:var(--text-light); font-size:14px; }
+.solution-content h3 { font-family:var(--font-serif); font-size:24px; margin-bottom:12px; }
+.solution-content p { color:var(--text-light); font-size:15px; line-height:1.8; margin-bottom:16px; }
+.solution-content .features { list-style:none; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.solution-content .features li { font-size:14px; color:var(--text); display:flex; align-items:center; gap:8px; }
+.solution-content .features li i { color:var(--gold); font-size:14px; }
+
+/* 关于测评 */
+.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+.about-text h2 { font-family:var(--font-serif); font-size:34px; margin-bottom:16px; }
+.about-text p { color:var(--text-light); font-size:15px; line-height:1.8; margin-bottom:16px; }
+.about-text .method-list { list-style:none; padding:0; margin-top:24px; }
+.about-text .method-list li { display:flex; align-items:flex-start; gap:14px; padding:12px 0; border-bottom:1px solid var(--border); }
+.about-text .method-list li:last-child { border-bottom:none; }
+.about-text .method-list li .num { width:28px; height:28px; border-radius:50%; background:var(--gold); color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; flex-shrink:0; margin-top:2px; }
+.about-text .method-list li div h4 { font-size:15px; margin-bottom:2px; }
+.about-text .method-list li div p { font-size:13px; margin:0; color:var(--text-light); }
+.about-visual { background:linear-gradient(135deg,#1a2332,#2c3e50); border-radius:var(--radius); padding:48px; color:#fff; }
+.about-visual h3 { font-family:var(--font-serif); font-size:24px; margin-bottom:20px; }
+.about-visual .pillar { display:flex; align-items:center; gap:16px; padding:16px 0; border-bottom:1px solid rgba(255,255,255,0.06); }
+.about-visual .pillar:last-child { border-bottom:none; }
+.about-visual .pillar .dot { width:8px; height:8px; border-radius:50%; background:var(--gold); flex-shrink:0; }
+.about-visual .pillar div strong { display:block; font-size:15px; }
+.about-visual .pillar div span { font-size:13px; color:rgba(255,255,255,0.5); }
+
+/* 加入我们 */
+.join-grid { display:grid; grid-template-columns:2fr 1fr; gap:48px; }
+.join-text h2 { font-family:var(--font-serif); font-size:34px; margin-bottom:16px; }
+.join-text p { color:var(--text-light); font-size:15px; line-height:1.8; margin-bottom:24px; }
+.join-benefits { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.join-benefits .benefit { background:#fff; border-radius:var(--radius); padding:24px; border:1px solid var(--border); }
+.join-benefits .benefit i { font-size:24px; color:var(--gold); margin-bottom:10px; }
+.join-benefits .benefit h4 { font-size:15px; margin-bottom:4px; }
+.join-benefits .benefit p { font-size:13px; color:var(--text-light); margin:0; }
+.join-form { background:#fff; border-radius:var(--radius); padding:36px; border:1px solid var(--border); }
+.join-form h3 { font-family:var(--font-serif); font-size:20px; margin-bottom:20px; }
+.join-form .field { margin-bottom:16px; }
+.join-form .field label { display:block; font-size:13px; font-weight:600; margin-bottom:4px; color:var(--text); }
+.join-form .field input,.join-form .field select { width:100%; padding:10px 14px; border:1px solid var(--border); border-radius:6px; font-size:14px; font-family:var(--font-sans); background:var(--cream-light); transition:var(--transition); }
+.join-form .field input:focus,.join-form .field select:focus { outline:none; border-color:var(--gold); box-shadow:0 0 0 3px rgba(201,169,110,0.1); }
+.join-form button { width:100%; padding:12px; background:var(--gold); color:var(--navy); border:none; border-radius:6px; font-size:15px; font-weight:600; cursor:pointer; transition:var(--transition); }
+.join-form button:hover { background:var(--gold-light); }
+
+/* Footer */
+.footer { background:#1a2332; padding:60px 24px 32px; }
+.footer-inner { max-width:1200px; margin:0 auto; }
+.footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:48px; margin-bottom:40px; }
+.footer-brand h3 { color:#fff; font-size:18px; margin-bottom:8px; }
+.footer-brand p { color:rgba(255,255,255,0.4); font-size:13px; line-height:1.7; max-width:300px; }
+.footer-col h4 { color:var(--gold); font-size:13px; letter-spacing:2px; margin-bottom:16px; font-weight:600; }
+.footer-col a { display:block; color:rgba(255,255,255,0.45); text-decoration:none; font-size:14px; padding:5px 0; transition:var(--transition); }
+.footer-col a:hover { color:var(--gold); }
+.footer-bottom { border-top:1px solid rgba(255,255,255,0.06); padding-top:24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+.footer-bottom p { color:rgba(255,255,255,0.3); font-size:13px; }
+.footer-bottom .socials { display:flex; gap:12px; }
+.footer-bottom .socials a { width:36px; height:36px; border-radius:50%; border:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.4); text-decoration:none; transition:var(--transition); }
+.footer-bottom .socials a:hover { border-color:var(--gold); color:var(--gold); background:rgba(201,169,110,0.08); }
+
+@media (max-width:1024px) {
+  .product-grid { grid-template-columns:1fr 1fr; }
+  .solution-row { grid-template-columns:1fr; gap:24px; }
+  .solution-row.reverse { direction:ltr; }
+  .about-grid { grid-template-columns:1fr; gap:40px; }
+  .join-grid { grid-template-columns:1fr; }
+  .footer-grid { grid-template-columns:1fr 1fr; gap:32px; }
+}
+
+@media (max-width:768px) {
+  .nav-links { display:none; flex-direction:column; position:absolute; top:72px; left:0; right:0; background:rgba(26,35,50,0.98); border-bottom:1px solid rgba(255,255,255,0.06); padding:16px; gap:4px; }
+  .nav-links.open { display:flex; }
+  .nav-toggle { display:block; }
+  .hero h1 { font-size:32px; }
+  .hero-stats { flex-wrap:wrap; gap:24px; }
+  .hero-stats .stat h3 { font-size:28px; }
+  .product-grid { grid-template-columns:1fr; }
+  .section-title { font-size:28px; }
+  .section { padding:60px 16px; }
+  .join-benefits { grid-template-columns:1fr; }
+  .solution-content .features { grid-template-columns:1fr; }
+  .footer-grid { grid-template-columns:1fr; }
+  .footer-bottom { flex-direction:column; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">
+      <div class="logo-icon">智</div>
+      <div><span>智善人才测评</span><small>ZHI SHAN ASSESSMENT</small></div>
+    </a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')"><i class="fas fa-bars"></i></button>
+    <div class="nav-links">
+      <a href="#product">产品</a>
+      <a href="#solutions">解决方案</a>
+      <a href="#about">关于测评</a>
+      <a href="#join">加入我们</a>
+      <a href="/dashboard/" class="nav-cta"><i class="fas fa-user-shield"></i> 企业管理员登录</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">专业的组织人才评估服务商</div>
+    <h1>以科学评估，<em>成就企业人才价值</em></h1>
+    <p>智善人才测评致力于为企业提供专业、科学、系统的人才评估解决方案，帮助组织精准识别人才、合理配置岗位、降低用人风险，驱动人才战略落地。</p>
+    <div class="hero-actions">
+      <a href="#product" class="btn btn-primary"><i class="fas fa-arrow-right"></i> 了解产品</a>
+      <a href="#solutions" class="btn btn-outline"><i class="fas fa-building"></i> 查看解决方案</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><h3>500+</h3><p>服务企业</p></div>
+      <div class="stat"><h3>50,000+</h3><p>评估人次</p></div>
+      <div class="stat"><h3>98.6%</h3><p>客户满意度</p></div>
+      <div class="stat"><h3>7大</h3><p>评估维度</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 产品 -->
+<section class="section" id="product">
+  <div class="inner">
+    <div class="section-header">
+      <div class="section-label">Products</div>
+      <h2 class="section-title">核心产品体系</h2>
+      <p class="section-subtitle">覆盖人才选、用、育、留全生命周期，助力企业科学决策</p>
+    </div>
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="icon" style="background:linear-gradient(135deg,#c9a96e,#a8884d);"><i class="fas fa-user-check"></i></div>
+        <h3>入职人才评估</h3>
+        <p>面向新员工入职场景，通过多维度的科学评估，全面考察候选人的岗位适配度与职业发展潜力。</p>
+        <ul class="features">
+          <li><i class="fas fa-check"></i> 岗位适配度分析</li>
+          <li><i class="fas fa-check"></i> 职业发展倾向评估</li>
+          <li><i class="fas fa-check"></i> 团队融合度预测</li>
+          <li><i class="fas fa-check"></i> 自动生成评估报告</li>
+        </ul>
+      </div>
+      <div class="product-card">
+        <div class="icon" style="background:linear-gradient(135deg,#5a7a9a,#3d5a78);"><i class="fas fa-chart-line"></i></div>
+        <h3>岗位胜任力评估</h3>
+        <p>针对不同岗位序列构建胜任力模型，精准评估现任员工与目标岗位的匹配程度，为人才盘点提供数据支撑。</p>
+        <ul class="features">
+          <li><i class="fas fa-check"></i> 胜任力模型定制</li>
+          <li><i class="fas fa-check"></i> 多维度综合评分</li>
+          <li><i class="fas fa-check"></i> 人才九宫格分布</li>
+          <li><i class="fas fa-check"></i> 发展建议与路径规划</li>
+        </ul>
+      </div>
+      <div class="product-card">
+        <div class="icon" style="background:linear-gradient(135deg,#8b6f47,#6b5537);"><i class="fas fa-users-cog"></i></div>
+        <h3>团队效能诊断</h3>
+        <p>从团队协作、沟通风格、决策模式等多个维度对团队进行系统诊断，发现团队效能提升的关键杠杆点。</p>
+        <ul class="features">
+          <li><i class="fas fa-check"></i> 团队角色分析</li>
+          <li><i class="fas fa-check"></i> 协作效能评估</li>
+          <li><i class="fas fa-check"></i> 沟通风格匹配</li>
+          <li><i class="fas fa-check"></i> 改进建议报告</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 解决方案 -->
+<section class="section section-alt" id="solutions">
+  <div class="inner">
+    <div class="section-header">
+      <div class="section-label">Solutions</div>
+      <h2 class="section-title">行业解决方案</h2>
+      <p class="section-subtitle">深耕多个行业领域，提供贴合业务场景的人才评估方案</p>
+    </div>
+    <div class="solution-grid">
+      <div class="solution-row">
+        <div class="solution-visual">
+          <div class="big-icon"><i class="fas fa-store"></i></div>
+          <h4>零售与服务行业</h4>
+          <p>针对零售、服务业人员流动性大、岗位技能要求多样化的特点，提供快速、精准的一线人员评估方案，助力企业提升人岗匹配效率。</p>
+        </div>
+        <div class="solution-content">
+          <h3>零售与服务人才评估方案</h3>
+          <p>覆盖门店导购、店长、区域经理等核心岗位，从服务意识、抗压能力、团队协作等维度进行全方位评估，帮助企业快速筛选高潜力人才。</p>
+          <ul class="features">
+            <li><i class="fas fa-check-circle"></i> 一线岗位快速评估</li>
+            <li><i class="fas fa-check-circle"></i> 管理潜力量化分析</li>
+            <li><i class="fas fa-check-circle"></i> 批量人员高效筛选</li>
+            <li><i class="fas fa-check-circle"></i> 岗位匹配度可视化</li>
+          </ul>
+        </div>
+      </div>
+      <div class="solution-row">
+        <div class="solution-content">
+          <h3>科技与互联网人才评估方案</h3>
+          <p>针对科技行业对创新能力、学习能力、团队协作的高要求，提供技术人才与管理人才的差异化评估方案，助力企业在激烈的人才竞争中精准甄选。</p>
+          <ul class="features">
+            <li><i class="fas fa-check-circle"></i> 技术人才专业评估</li>
+            <li><i class="fas fa-check-circle"></i> 管理梯队人才盘点</li>
+            <li><i class="fas fa-check-circle"></i> 创新潜力量化测评</li>
+            <li><i class="fas fa-check-circle"></i> 核心人才风险预警</li>
+          </ul>
+        </div>
+        <div class="solution-visual">
+          <div class="big-icon"><i class="fas fa-microchip"></i></div>
+          <h4>科技与互联网行业</h4>
+          <p>针对技术人才评估难、管理人才识别难等痛点，构建覆盖技术序列与管理序列的双通道评估体系。</p>
+        </div>
+      </div>
+      <div class="solution-row">
+        <div class="solution-visual">
+          <div class="big-icon"><i class="fas fa-university"></i></div>
+          <h4>金融与保险行业</h4>
+          <p>针对金融行业对合规意识、风险管控、职业操守的高标准要求，提供专业、严谨的人才评估服务。</p>
+        </div>
+        <div class="solution-content">
+          <h3>金融与保险人才评估方案</h3>
+          <p>覆盖风险管理、客户服务、销售管理等核心岗位，从职业素养、风险意识、压力应对等多维度进行系统评估，确保人才与岗位的高度匹配。</p>
+          <ul class="features">
+            <li><i class="fas fa-check-circle"></i> 合规与风险意识评估</li>
+            <li><i class="fas fa-check-circle"></i> 客户服务能力测评</li>
+            <li><i class="fas fa-check-circle"></i> 销售管理潜质分析</li>
+            <li><i class="fas fa-check-circle"></i> 职业操守量化评估</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 关于测评 -->
+<section class="section" id="about">
+  <div class="inner">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="section-label">About</div>
+        <h2>关于智善人才测评</h2>
+        <p>智善人才测评是由资深人力资源管理专家与组织心理学研究者共同打造的专业人才评估平台。我们融合国际先进的评估理念与本土企业实践，致力于为企业提供科学、可靠、便捷的人才评估工具。</p>
+        <p>我们的评估体系基于大五人格理论、岗位胜任力模型等多维理论框架，结合大数据分析与人工智能算法，确保评估结果的科学性和准确性。</p>
+        <ul class="method-list">
+          <li>
+            <span class="num">1</span>
+            <div>
+              <h4>科学理论支撑</h4>
+              <p>基于大五人格、岗位胜任力等成熟理论框架，确保评估维度的科学性与系统性</p>
+            </div>
+          </li>
+          <li>
+            <span class="num">2</span>
+            <div>
+              <h4>本土化实践</h4>
+              <p>深度结合中国企业组织特点与文化背景，打造贴合本土需求的人才评估体系</p>
+            </div>
+          </li>
+          <li>
+            <span class="num">3</span>
+            <div>
+              <h4>智能化分析</h4>
+              <p>运用人工智能与大数据技术，实现评估报告的自动生成与智能解读</p>
+            </div>
+          </li>
+          <li>
+            <span class="num">4</span>
+            <div>
+              <h4>持续迭代优化</h4>
+              <p>基于大量企业实践数据不断优化评估模型，提升预测效度与信度</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="about-visual">
+        <h3>七大核心评估维度</h3>
+        <div class="pillar"><span class="dot"></span><div><strong>职业适应力</strong><span>评估候选人的岗位匹配程度与适应能力</span></div></div>
+        <div class="pillar"><span class="dot"></span><div><strong>压力管理</strong><span>评估面对工作压力时的应对与调节能力</span></div></div>
+        <div class="pillar"><span class="dot"></span><div><strong>职业倾向</strong><span>分析职业发展倾向与长期发展意愿</span></div></div>
+        <div class="pillar"><span class="dot"></span><div><strong>个性特征</strong><span>评估核心个性特质与行为倾向</span></div></div>
+        <div class="pillar"><span class="dot"></span><div><strong>情绪智力</strong><span>评估情绪觉察、管理与人际互动能力</span></div></div>
+        <div class="pillar"><span class="dot"></span><div><strong>团队协作</strong><span>评估团队协作意识、沟通风格与人际适配度</span></div></div>
+        <div class="pillar"><span class="dot"></span><div><strong>职业风险</strong><span>评估潜在职场适应风险因素</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 加入我们 -->
+<section class="section section-alt" id="join">
+  <div class="inner">
+    <div class="section-header">
+      <div class="section-label">Careers</div>
+      <h2 class="section-title">加入我们</h2>
+      <p class="section-subtitle">与智善一起，用专业评估驱动人才价值，共创美好未来</p>
+    </div>
+    <div class="join-grid">
+      <div class="join-text">
+        <p>智善人才测评汇聚了一群热爱人才评估事业的专业人士。我们相信，科学的人才评估能够帮助企业释放人才潜能，实现组织与个人的共同成长。如果你也认同我们的理念，欢迎加入智善团队。</p>
+        <div class="join-benefits">
+          <div class="benefit">
+            <i class="fas fa-home"></i>
+            <h4>舒适工作环境</h4>
+            <p>位于城市核心地段，现代化办公空间，打造高效愉悦的工作体验</p>
+          </div>
+          <div class="benefit">
+            <i class="fas fa-chart-bar"></i>
+            <h4>职业发展通道</h4>
+            <p>清晰的双通道晋升体系，专业序列与管理序列并行发展</p>
+          </div>
+          <div class="benefit">
+            <i class="fas fa-graduation-cap"></i>
+            <h4>持续学习成长</h4>
+            <p>完善的培训体系，定期行业交流，支持每位员工的持续成长</p>
+          </div>
+          <div class="benefit">
+            <i class="fas fa-hand-holding-heart"></i>
+            <h4>有温度的团队</h4>
+            <p>开放包容的团队文化，弹性工作制度，关注员工工作生活平衡</p>
+          </div>
+        </div>
+      </div>
+      <div class="join-form">
+        <h3>投递简历</h3>
+        <div class="field">
+          <label>姓名</label>
+          <input type="text" placeholder="请输入您的姓名">
+        </div>
+        <div class="field">
+          <label>联系方式</label>
+          <input type="text" placeholder="手机号或邮箱">
+        </div>
+        <div class="field">
+          <label>意向岗位</label>
+          <select>
+            <option>请选择</option>
+            <option>产品经理</option>
+            <option>前端开发工程师</option>
+            <option>后端开发工程师</option>
+            <option>人力资源顾问</option>
+            <option>市场营销专员</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>工作年限</label>
+          <select>
+            <option>请选择</option>
+            <option>应届毕业生</option>
+            <option>1-3年</option>
+            <option>3-5年</option>
+            <option>5-10年</option>
+            <option>10年以上</option>
+          </select>
+        </div>
+        <button onclick="alert('感谢您的关注！简历投递功能即将上线，敬请期待。')"><i class="fas fa-paper-plane"></i> 提交申请</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3><i class="fas fa-star" style="color:var(--gold);margin-right:8px;"></i>智善人才测评</h3>
+        <p>以科学评估成就企业人才价值，致力于为组织提供专业、可靠、便捷的人才评估解决方案。</p>
+      </div>
+      <div class="footer-col">
+        <h4>产品中心</h4>
+        <a href="#">入职人才评估</a>
+        <a href="#">岗位胜任力评估</a>
+        <a href="#">团队效能诊断</a>
+        <a href="#">定制化评估方案</a>
+      </div>
+      <div class="footer-col">
+        <h4>关于我们</h4>
+        <a href="#">公司介绍</a>
+        <a href="#">评估理念</a>
+        <a href="#">专家团队</a>
+        <a href="#">联系我们</a>
+      </div>
+      <div class="footer-col">
+        <h4>支持与服务</h4>
+        <a href="#">使用指南</a>
+        <a href="#">常见问题</a>
+        <a href="#">客户案例</a>
+        <a href="#">合作伙伴</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 智善人才测评 - 专业人才评估平台 | 粤ICP备XXXXXXXX号</p>
+      <div class="socials">
+        <a href="#"><i class="fab fa-weixin"></i></a>
+        <a href="#"><i class="fab fa-weibo"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Navbar scroll effect
+window.addEventListener('scroll',function(){document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>40)});
+
+// Smooth scroll for all anchor links
+document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var t=document.querySelector(this.getAttribute('href'));if(t){var o=t.offsetTop-80;window.scrollTo({top:o,behavior:'smooth'});document.querySelector('.nav-links')&&document.querySelector('.nav-links').classList.remove('open')}})});
+</script>
+</body>
+</html>

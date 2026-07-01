@@ -1,0 +1,9 @@
+{% extends 'dashboard/base.html' %}{% block title %}系统设置{% endblock %}{% block breadcrumb %}系统设置{% endblock %}
+{% block content %}<div class="page-header"><h1>系统设置</h1></div>
+<form method="post">{% csrf_token %}<div class="card" style="max-width:600px;">
+<div class="form-group"><label>系统名称</label><input type="text" name="system_name" class="form-control" value="{{ configs.system_name.value|default:'企业入职心理测评系统' }}"></div>
+<div class="form-group"><label>默认作答时长(分钟)</label><input type="number" name="default_duration" class="form-control" value="{{ configs.default_duration.value|default:'30' }}"></div>
+<div class="form-group"><label>默认有效期(天)</label><input type="number" name="default_valid_days" class="form-control" value="{{ configs.default_valid_days.value|default:'7' }}"></div>
+<div class="form-group"><label>版权信息</label><input type="text" name="copyright_info" class="form-control" value="{{ configs.copyright_info.value|default:'(c) 2026 企业人力资源部' }}"></div>
+<button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> 保存</button></div></form>
+{% endblock %}

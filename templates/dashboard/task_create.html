@@ -1,0 +1,13 @@
+{% extends 'dashboard/base.html' %}{% block title %}创建任务{% endblock %}{% block breadcrumb %}<a href="{% url 'dashboard:task_list' %}">任务</a> / 创建{% endblock %}
+{% block content %}<div class="page-header"><h1>创建测评任务</h1></div>
+<form method="post">{% csrf_token %}
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+<div class="card"><div class="card-header">任务设置</div>
+<div class="form-group"><label>任务名称</label><input type="text" name="name" class="form-control" placeholder="如: 2026年6月新员工入职测评" required></div>
+<div class="form-group"><label>测评模板</label><select name="template" class="form-control" required>{% for t in templates %}<option value="{{ t.pk }}">{{ t.name }} ({{ t.total_questions }}题)</option>{% endfor %}</select></div>
+<div class="form-group"><label>分公司</label><select name="branch" class="form-control">{% if user.is_super_admin %}<option value="">全部</option>{% endif %}{% for b in branches %}<option value="{{ b.pk }}">{{ b.name }}</option>{% endfor %}</select></div>
+<div class="form-group"><label>有效天数</label><input type="number" name="valid_days" class="form-control" value="7"></div>
+<div class="form-group"><label>作答时长(分钟)</label><input type="number" name="duration_minutes" class="form-control" value="30"></div></div>
+<div class="card"><div class="card-header">选择员工</div><p style="font-size:12px;color:var(--text-light);margin-bottom:12px;">可选 — 不选择员工则创建公开分享任务，创建后可在任务详情页获取公开链接和二维码。</p><div style="max-height:400px;overflow-y:auto;">{% for emp in employees %}<label style="display:flex;align-items:center;gap:8px;padding:8px 0;cursor:pointer;border-bottom:1px solid var(--border);"><input type="checkbox" name="employees" value="{{ emp.pk }}"> <strong>{{ emp.name }}</strong> <span style="color:var(--text-light)">({{ emp.position|default:"-" }})</span></label>{% empty %}<p style="color:var(--text-light);text-align:center;padding:20px;">暂无可用员工，请先添加员工信息</p>{% endfor %}</div></div><div style="max-height:400px;overflow-y:auto;">{% for emp in employees %}<label style="display:flex;align-items:center;gap:8px;padding:8px 0;cursor:pointer;border-bottom:1px solid var(--border);"><input type="checkbox" name="employees" value="{{ emp.pk }}"> <strong>{{ emp.name }}</strong> <span style="color:var(--text-light)">({{ emp.position|default:'-' }})</span></label>{% empty %}<p style="color:var(--text-light);text-align:center;padding:20px;">暂无可下发的员工，请先添加员工信息</p>{% endfor %}</div></div></div>
+<div style="margin-top:16px;"><button type="submit" class="btn btn-success"><i class="fas fa-paper-plane"></i> 创建并下发</button> <a href="{% url 'dashboard:task_list' %}" class="btn btn-outline">取消</a></div></form>
+{% endblock %}

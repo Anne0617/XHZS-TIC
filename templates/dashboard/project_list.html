@@ -1,0 +1,57 @@
+{% extends 'dashboard/base.html' %}{% block title %}项目管理{% endblock %}{% block breadcrumb %}项目管理{% endblock %}
+{% block content %}
+<div class="page-header"><h1>项目管理</h1>
+{% if user.is_super_admin or user.is_hr_admin %}
+<a href="javascript:void(0)" onclick="showAddForm()" class="btn btn-success"><i class="fas fa-plus"></i> 新建项目</a>
+{% endif %}
+</div>
+{% if user.is_super_admin or user.is_hr_admin %}
+<div class="card" id="addForm" style="display:none;">
+    <div class="card-header"><span><i class="fas fa-plus"></i> 新建项目</span></div>
+    <form method="post" action="{% url 'dashboard:project_create' %}">
+        {% csrf_token %}
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group"><label>项目名称</label><input type="text" name="name" class="form-control" required placeholder="如: 深圳华润项目"></div>
+            <div class="form-group"><label>项目代码</label><input type="text" name="code" class="form-control" required placeholder="如: SZ-HR"></div>
+            {% if user.is_super_admin %}
+            <div class="form-group"><label>所属分公司</label><select name="branch" class="form-control" required>
+                {% for b in branches %}<option value="{{ b.id }}">{{ b.name }}</option>{% endfor %}
+            </select></div>
+            {% endif %}
+            <div class="form-group"><label>联系电话</label><input type="text" name="phone" class="form-control" placeholder="可选"></div>
+            <div class="form-group" style="grid-column:1/-1;"><label>地址</label><input type="text" name="address" class="form-control" placeholder="可选"></div>
+        </div>
+        <button type="submit" class="btn btn-accent" style="margin-top:8px;"><i class="fas fa-save"></i> 保存</button>
+        <button type="button" class="btn btn-outline" style="margin-top:8px;" onclick="document.getElementById('addForm').style.display='none'">取消</button>
+    </form>
+</div>
+{% endif %}
+<div class="card">
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>项目名称</th><th>代码</th><th>所属分公司</th><th>联系电话</th><th>操作</th></tr></thead>
+            <tbody>
+            {% for p in projects %}
+            <tr>
+                <td><strong>{{ p.name }}</strong></td>
+                <td><code>{{ p.code }}</code></td>
+                <td>{{ p.branch.name }}</td>
+                <td>{{ p.contact_phone|default:"-" }}</td>
+                <td>
+                    <form method="post" action="{% url 'dashboard:project_delete' p.pk %}" onsubmit="return confirm('确定删除项目 {{ p.name }}？')" style="display:inline;">
+                        {% csrf_token %}
+                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5"><div class="empty-state"><i class="fas fa-folder-open"></i><p>暂无项目，请先新建项目</p></div></td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+function showAddForm(){document.getElementById('addForm').style.display='block'}
+</script>
+{% endblock %}

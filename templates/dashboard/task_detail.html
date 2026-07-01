@@ -1,0 +1,96 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}{{ task.name }}{% endblock %}
+{% block breadcrumb %}<a href="{% url 'dashboard:task_list' %}">任务</a> / {{ task.name }}{% endblock %}
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js">function copyPublicLink(){
+  var u = window.location.origin+'/assessment/enter/{{ task.template.exam_type }}/';
+  navigator.clipboard.writeText(u).then(function(){alert("公开链接已复制到剪贴板")}).catch(function(){var t=document.createElement("textarea");t.value=u;document.body.appendChild(t);t.select();document.execCommand("copy");document.body.removeChild(t);alert("公开链接已复制")})}
+(function(){
+  var el=document.getElementById("publicQRContainer");
+  if(el&&typeof QRCode!=="undefined"){
+    var url=window.location.origin+"/assessment/enter/{{ task.template.exam_type }}/";
+    new QRCode(el,{text:url,width:160,height:160,colorDark:"#c62828",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.H})}
+})();</script>
+<div class="page-header"><h1>{{ task.name }}</h1><div style="display:flex;gap:4px;">
+<form method="post" action="{% url 'dashboard:task_status' task.pk 'pause' %}" style="display:inline;">{% csrf_token %}<button class="btn btn-warning btn-sm" title="暂停"><i class="fas fa-pause"></i></button></form>
+<form method="post" action="{% url 'dashboard:task_status' task.pk 'resume' %}" style="display:inline;">{% csrf_token %}<button class="btn btn-success btn-sm" title="恢复"><i class="fas fa-play"></i></button></form>
+<form method="post" action="{% url 'dashboard:task_status' task.pk 'finish' %}" style="display:inline;">{% csrf_token %}<button class="btn btn-info btn-sm" title="结束"><i class="fas fa-check"></i></button></form>
+<form method="post" action="{% url 'dashboard:task_status' task.pk 'cancel' %}" style="display:inline;" onsubmit="return confirm('确认作废？')">{% csrf_token %}<button class="btn btn-danger btn-sm" title="作废"><i class="fas fa-ban"></i></button></form>
+</div></div>
+<div class="stats-grid" style="grid-template-columns:repeat(4,1fr);">
+<div class="stat-card"><div class="stat-info"><h3>{{ assignments|length }}</h3><p>总人数</p></div></div>
+<div class="stat-card"><div class="stat-info"><h3>{{ completed_count }}</h3><p>已完成</p></div></div>
+<div class="stat-card"><div class="stat-info"><h3>{{ pending_count }}</h3><p>待作答</p></div></div>
+<div class="stat-card"><div class="stat-info"><h3>{{ expired_count }}</h3><p>已超时</p></div></div></div>
+<div class="card"><div class="card-header">
+<div style="display:flex;justify-content:space-between;align-items:center;">
+<span>员工作答列表 <span style="font-size:12px;color:#78909c;font-weight:400;">— 点击按钮分享给候选人</span></span>
+</div></div><div class="table-wrap"><table><thead><tr>
+<th>员工</th><th>岗位</th><th>测评码</th><th>状态</th><th>分配时间</th><th>完成时间</th><th style="width:130px;">分享方式</th>
+</tr></thead><tbody>
+{% for a in assignments %}<tr>
+<td>{{ a.employee.name }}</td>
+<td>{{ a.employee.position|default:"-" }}</td>
+<td><code>{{ a.access_code }}</code></td>
+<td><span class="badge {% if a.status == 'completed' %}badge-success{% elif a.status == 'expired' %}badge-danger{% elif a.status == 'in_progress' %}badge-info{% else %}badge-warning{% endif %}">{{ a.get_status_display }}</span></td>
+<td>{{ a.assigned_at|date:"m/d H:i" }}</td>
+<td>{{ a.completed_at|date:"m/d H:i"|default:"-" }}</td>
+<td style="white-space:nowrap;">
+<button onclick="copyLink('{{ a.access_code }}')" style="background:#c62828;color:#fff;padding:4px 10px;font-size:12px;border:none;border-radius:4px;cursor:pointer;margin-right:4px;" title="复制测评链接"><i class="fas fa-link"></i> 链接</button>
+<button onclick="showQR('{{ a.access_code }}','{{ a.employee.name }}')" style="background:#1565c0;color:#fff;padding:4px 10px;font-size:12px;border:none;border-radius:4px;cursor:pointer;" title="生成二维码"><i class="fas fa-qrcode"></i> 二维码</button>
+</td></tr>{% empty %}<tr><td colspan="7"><div class="empty-state"><i class="fas fa-tasks"></i><p>暂无数据</p></div></td></tr>{% endfor %}
+</tbody></table></div></div>
+
+
+{% if task.template.exam_type %}
+<div class="card">
+<div class="card-header">公开分享 <span style="font-size:12px;color:#78909c;font-weight:400;">— 无需导入员工，直接分享链接给候选人</span></div>
+<div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap;padding:8px 0;">
+<div style="text-align:center;padding:12px;background:var(--bg);border-radius:8px;">
+<div id="publicQRContainer" style="width:160px;height:160px;margin:0 auto 8px;"></div>
+<button onclick="copyPublicLink()" style="background:#c62828;color:#fff;padding:6px 14px;font-size:12px;border:none;border-radius:4px;cursor:pointer;"><i class="fas fa-copy"></i> 复制公开链接</button>
+</div>
+<div>
+<div style="font-weight:600;margin-bottom:4px;color:#fff;">测评入口链接</div>
+<code style="font-size:12px;word-break:break-all;display:block;padding:8px 12px;background:var(--bg);border-radius:4px;margin-bottom:8px;">/assessment/enter/{{ task.template.exam_type }}/</code>
+<p style="font-size:12px;color:var(--text-light);">候选人扫码后填写姓名、手机号即可开始作答，结果自动归入此任务。</p>
+</div>
+</div>
+</div>
+{% endif %}
+
+<div id="qrModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;" onclick="if(event.target==this)closeQR()">
+<div style="background:#fff;border-radius:12px;padding:28px;max-width:320px;text-align:center;margin:auto;">
+<h3 style="font-size:16px;color:#263238;margin-bottom:4px;" id="qrTitle">测评二维码</h3>
+<p style="font-size:13px;color:#78909c;margin-bottom:16px;" id="qrSub">扫码即进入测评页面</p>
+<div id="qrContainer" style="display:flex;justify-content:center;margin-bottom:12px;"></div>
+<div style="display:flex;gap:8px;justify-content:center;">
+<button onclick="copyQRUrl()" style="padding:8px 16px;background:#c62828;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;"><i class="fas fa-copy"></i> 复制测评链接</button>
+<button onclick="closeQR()" style="padding:8px 16px;background:#f0f2f5;color:#455a64;border:none;border-radius:6px;cursor:pointer;font-size:13px;">关闭</button>
+</div></div></div>
+
+<script>
+var qrUrl='',qrInst=null;
+function copyLink(c){
+ var u=window.location.origin+'/assessment/take/'+c+'/'+'/';
+ navigator.clipboard.writeText(u).then(function(){alert('测评链接已复制:\n'+u)}).catch(function(){
+  var t=document.createElement('textarea');t.value=u;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);alert('测评链接已复制')})}
+function showQR(c,n){
+ qrUrl=window.location.origin+'/assessment/take/'+c+'/'+'/';
+ document.getElementById('qrTitle').textContent=n+' - 测评二维码';
+ document.getElementById('qrModal').style.display='flex';
+ var el=document.getElementById('qrContainer');el.innerHTML='';
+ if(typeof QRCode!=='undefined'){new QRCode(el,{text:qrUrl,width:180,height:180,colorDark:'#c62828',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H})}
+ else{el.innerHTML='<p style="color:#78909c;">加载中...</p>';setTimeout(function(){showQR(c,n)},500)}}
+function closeQR(){document.getElementById('qrModal').style.display='none'}
+function copyQRUrl(){navigator.clipboard.writeText(qrUrl).then(function(){alert('已复制到剪贴板')}).catch(function(){alert('链接: '+qrUrl)})}
+function copyPublicLink(){
+  var u = window.location.origin+'/assessment/enter/{{ task.template.exam_type }}/';
+  navigator.clipboard.writeText(u).then(function(){alert("公开链接已复制到剪贴板")}).catch(function(){var t=document.createElement("textarea");t.value=u;document.body.appendChild(t);t.select();document.execCommand("copy");document.body.removeChild(t);alert("公开链接已复制")})}
+(function(){
+  var el=document.getElementById("publicQRContainer");
+  if(el&&typeof QRCode!=="undefined"){
+    var url=window.location.origin+"/assessment/enter/{{ task.template.exam_type }}/";
+    new QRCode(el,{text:url,width:160,height:160,colorDark:"#c62828",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.H})}
+})();</script>
+{% endblock %}

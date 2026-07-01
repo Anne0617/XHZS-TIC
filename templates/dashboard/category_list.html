@@ -1,0 +1,5 @@
+{% extends 'dashboard/base.html' %}{% block title %}维度分类{% endblock %}{% block breadcrumb %}维度分类{% endblock %}
+{% block content %}<div class="page-header"><h1>测评维度</h1><a href="{% url 'dashboard:question_list' %}" class="btn btn-outline btn-sm"><i class="fas fa-arrow-left"></i> 返回题库</a></div>
+<div class="card"><div class="table-wrap"><table><thead><tr><th>名称</th><th>编码</th><th>排序</th><th>状态</th><th>操作</th></tr></thead>
+<tbody>{% for c in categories %}<tr><td><strong>{{ c.name }}</strong></td><td><code>{{ c.code }}</code></td><td>{{ c.sort_order }}</td><td>{% if c.is_active %}<span class="badge badge-success">启用</span>{% else %}禁用{% endif %}</td><td><form method="post" action="{% url 'dashboard:category_delete' c.pk %}" onsubmit="return confirm('确定删除？')" style="display:inline;">{% csrf_token %}<button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button></form></td></tr>{% empty %}<tr><td colspan="5"><div class="empty-state"><i class="fas fa-tags"></i><p>暂无维度</p></div></td></tr>{% endfor %}</tbody></table></div></div>
+{% endblock %}

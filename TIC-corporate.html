@@ -1,0 +1,548 @@
+﻿<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>智善TIC人才测评体系 | 专业人才评估平台</title>
+<link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+<style>
+:root {
+  --prim: #0a2463;
+  --prim-dark: #061845;
+  --prim-light: #1a3a7a;
+  --prim-lighter: #2a5ac8;
+  --accent: #3b82f6;
+  --accent-light: #60a5fa;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --text-light: #94a3b8;
+  --border: #e2e8f0;
+  --shadow: 0 1px 3px rgba(10,36,99,0.08), 0 4px 12px rgba(10,36,99,0.06);
+  --shadow-hover: 0 4px 16px rgba(10,36,99,0.12), 0 8px 24px rgba(10,36,99,0.08);
+  --radius: 8px;
+  --radius-lg: 12px;
+  --font: "Segoe UI","PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:var(--font); background:var(--bg); color:var(--text); line-height:1.7; }
+a { text-decoration:none; color:inherit; }
+/* Navbar */
+.navbar { position:fixed; top:0; left:0; right:0; z-index:1000; background:#fff; border-bottom:1px solid var(--border); height:64px; box-shadow:0 1px 3px rgba(10,36,99,0.06); }
+.nav-inner { max-width:1200px; margin:0 auto; padding:0 24px; height:64px; display:flex; align-items:center; justify-content:space-between; }
+.nav-brand { display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--prim); }
+.nav-brand .logo { width:32px; height:32px; background:var(--prim); display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:800; color:#fff; border-radius:4px; }
+.nav-brand .name { font-size:16px; font-weight:700; letter-spacing:0.3px; }
+.nav-brand .name small { font-size:10px; color:var(--accent); letter-spacing:1px; display:block; font-weight:500; }
+.nav-links { display:flex; align-items:center; gap:2px; }
+.nav-links a { padding:8px 14px; color:var(--text-muted); text-decoration:none; font-size:13px; font-weight:500; cursor:pointer; transition:color .12s,background .12s; border-radius:4px; }
+.nav-links a:hover { color:var(--prim); background:rgba(10,36,99,0.04); }
+.nav-links a.active { color:var(--prim); background:rgba(10,36,99,0.06); font-weight:600; }
+.nav-links a.nav-cta { background:var(--prim); color:#fff; font-weight:600; padding:8px 16px; border-radius:4px; margin-left:4px; }
+.nav-links a.nav-cta:hover { background:var(--prim-light); }
+/* Page sections */
+.page { display:none; padding-top:64px; min-height:100vh; }
+.page.active { display:block; }
+.inner { max-width:1200px; margin:0 auto; padding:0 24px; }
+/* Hero */
+.hero { background:linear-gradient(135deg,var(--prim-dark) 0%,var(--prim) 40%,var(--prim-light) 100%); padding:100px 0 80px; position:relative; }
+.hero .inner { position:relative; z-index:1; }
+.hero h1 { font-size:40px; font-weight:800; color:#fff; line-height:1.2; max-width:680px; margin-bottom:16px; letter-spacing:-0.3px; }
+.hero h1 em { color:var(--accent-light); font-style:normal; }
+.hero p { font-size:16px; color:rgba(255,255,255,0.7); max-width:560px; line-height:1.8; margin-bottom:28px; }
+.hero .hero-btns { display:flex; gap:12px; flex-wrap:wrap; }
+.hero .hero-stats { display:flex; gap:48px; margin-top:48px; padding-top:36px; border-top:1px solid rgba(255,255,255,0.1); flex-wrap:wrap; }
+.hero .hero-stats div h3 { font-size:30px; font-weight:700; color:#fff; }
+.hero .hero-stats div p { font-size:13px; margin:4px 0 0; color:rgba(255,255,255,0.55); }
+/* Buttons */
+.btn { display:inline-flex; align-items:center; gap:8px; padding:10px 24px; font-size:14px; font-weight:600; text-decoration:none; cursor:pointer; border:none; border-radius:4px; transition:all .12s; }
+.btn-prim { background:var(--prim); color:#fff; }
+.btn-prim:hover { background:var(--prim-light); }
+.btn-outline { border:1px solid rgba(255,255,255,0.3); color:#fff; background:transparent; }
+.btn-outline:hover { border-color:var(--accent-light); color:var(--accent-light); background:rgba(255,255,255,0.06); }
+.btn-white { background:#fff; color:var(--prim); }
+.btn-white:hover { background:var(--accent-light); color:#fff; }
+/* Section base */
+.section { padding:72px 0; }
+.section-alt { background:#fff; }
+.section-title { text-align:center; margin-bottom:48px; }
+.section-title h2 { font-size:28px; font-weight:700; color:var(--prim); margin-bottom:8px; }
+.section-title p { font-size:14px; color:var(--text-muted); max-width:600px; margin:0 auto; }
+/* Product cards */
+.product-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:24px; }
+.product-card { background:#fff; border-radius:var(--radius-lg); border:1px solid var(--border); padding:32px; box-shadow:var(--shadow); transition:box-shadow .12s; }
+.product-card:hover { box-shadow:var(--shadow-hover); }
+.product-card .icon { width:48px; height:48px; background:var(--prim); border-radius:8px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px; margin-bottom:16px; }
+.product-card h3 { font-size:18px; color:var(--prim); margin-bottom:8px; }
+.product-card .subtitle { font-size:12px; color:var(--text-light); margin-bottom:12px; }
+.product-card p { font-size:13px; color:var(--text-muted); line-height:1.8; }
+.product-card .tag { display:inline-block; padding:2px 10px; font-size:11px; background:rgba(10,36,99,0.06); color:var(--prim); border-radius:10px; margin-top:12px; margin-right:6px; font-weight:500; }
+/* Solution cards */
+.solution-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:24px; }
+.solution-card { background:#f8fafc; border-radius:var(--radius-lg); border:1px solid var(--border); padding:28px; box-shadow:var(--shadow); }
+.solution-card h3 { font-size:16px; color:var(--prim); margin-bottom:6px; display:flex; align-items:center; gap:10px; }
+.solution-card h3 i { color:var(--accent); font-size:18px; }
+.solution-card p { font-size:13px; color:var(--text-muted); line-height:1.8; }
+.solution-card .feat-list { margin-top:12px; display:flex; flex-wrap:wrap; gap:6px; }
+.solution-card .feat-list span { font-size:12px; padding:3px 10px; background:rgba(59,130,246,0.06); color:var(--accent); border-radius:4px; }
+/* Talent Section */
+.talent-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.talent-card { text-align:center; padding:36px 24px; background:#fff; border-radius:var(--radius-lg); border:1px solid var(--border); box-shadow:var(--shadow); }
+.talent-card .icon { width:56px; height:56px; margin:0 auto 16px; background:rgba(10,36,99,0.06); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--prim); font-size:22px; }
+.talent-card h3 { font-size:16px; color:var(--prim); margin-bottom:8px; }
+.talent-card p { font-size:13px; color:var(--text-muted); line-height:1.7; }
+/* About */
+.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start; }
+.about-intro h3 { font-size:20px; color:var(--prim); margin-bottom:12px; }
+.about-intro p { font-size:14px; color:var(--text-muted); line-height:1.9; margin-bottom:12px; }
+.about-advantages h3 { font-size:20px; color:var(--prim); margin-bottom:16px; }
+.advantage-item { display:flex; gap:14px; margin-bottom:18px; }
+.advantage-item .icon { width:40px; height:40px; min-width:40px; background:rgba(10,36,99,0.06); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--prim); font-size:16px; }
+.advantage-item h4 { font-size:14px; color:var(--prim); margin-bottom:2px; }
+.advantage-item p { font-size:13px; color:var(--text-muted); line-height:1.6; margin:0; }
+.contact-info { margin-top:48px; background:#fff; border-radius:var(--radius-lg); border:1px solid var(--border); padding:32px; box-shadow:var(--shadow); }
+.contact-info h3 { font-size:18px; color:var(--prim); margin-bottom:16px; }
+.contact-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.contact-item { text-align:center; }
+.contact-item i { font-size:24px; color:var(--accent); margin-bottom:8px; }
+.contact-item h4 { font-size:14px; color:var(--prim); margin-bottom:4px; }
+.contact-item p { font-size:13px; color:var(--text-muted); margin:0; }
+/* Login form */
+.login-page { display:flex; align-items:center; justify-content:center; min-height:calc(100vh - 64px); padding:40px 24px; background:linear-gradient(135deg,var(--prim-dark),var(--prim),var(--prim-light)); }
+.login-card { background:#fff; border-radius:var(--radius-lg); box-shadow:0 8px 32px rgba(10,36,99,0.2); width:400px; max-width:100%; padding:40px; }
+.login-card .logo { width:48px; height:48px; background:var(--prim); border-radius:8px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px; margin:0 auto 16px; }
+.login-card h1 { font-size:20px; color:var(--prim); text-align:center; margin-bottom:4px; }
+.login-card .subtitle { font-size:13px; color:var(--text-muted); text-align:center; margin-bottom:28px; }
+.form-group { margin-bottom:16px; }
+.form-group label { display:block; font-size:13px; font-weight:500; color:var(--text); margin-bottom:6px; }
+.form-group input { width:100%; padding:10px 14px; border:1px solid var(--border); border-radius:4px; font-size:14px; transition:border-color .12s; outline:none; font-family:var(--font); }
+.form-group input:focus { border-color:var(--prim); box-shadow:0 0 0 2px rgba(10,36,99,0.1); }
+.btn-login { width:100%; padding:11px; background:var(--prim); color:#fff; border:none; border-radius:4px; font-size:14px; font-weight:600; cursor:pointer; transition:background .12s; font-family:var(--font); }
+.btn-login:hover { background:var(--prim-light); }
+.error-msg { font-size:13px; color:#dc2626; margin-bottom:12px; text-align:center; }
+/* Footer */
+.footer { background:var(--prim-dark); color:rgba(255,255,255,0.6); padding:32px 0; font-size:13px; text-align:center; border-top:1px solid rgba(255,255,255,0.06); }
+.footer a { color:rgba(255,255,255,0.7); }
+.footer a:hover { color:#fff; }
+/* Utility */
+.text-center { text-align:center; }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a class="nav-brand" href="javascript:void(0)" onclick="showPage('home')">
+      <div class="logo">T</div>
+      <div class="name">智善TIC<small>人才测评体系</small></div>
+    </a>
+    <div class="nav-links">
+      <a href="javascript:void(0)" onclick="showPage('home')" class="active">首页</a>
+      <a href="javascript:void(0)" onclick="showPage('product')">产品</a>
+      <a href="javascript:void(0)" onclick="showPage('solutions')">解决方案</a>
+      <a href="javascript:void(0)" onclick="showPage('about')">关于我们</a>
+      <a href="javascript:void(0)" onclick="showPage('login')" class="nav-cta"><i class="fas fa-user-shield"></i> 管理员登录</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== 首页 ===== -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="inner">
+      <h1><em>智善TIC</em> 智能人才测评体系</h1>
+      <p>TIC —— Talent（人才）· Insight（洞察）· Check（测评）。立足人才本身，依托专业测评工具，深度洞察人员特质与潜能，为企业人力资源管理提供科学支撑。智善TIC 由智善内部人力资源专家团队主导搭建，融合心理学与数字化技术，为企业提供从招聘筛选到梯队建设的一站式人才评估解决方案。</p>
+      <div class="hero-btns">
+        <a href="javascript:void(0)" class="btn btn-white" onclick="showPage('product')">了解产品 <i class="fas fa-arrow-right"></i></a>
+        <a href="javascript:void(0)" class="btn btn-outline" onclick="showPage('solutions')">解决方案</a>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===== TIC 品牌释义 ===== -->
+  <section class="section" style="padding:48px 0 32px;background:#fff;">
+    <div class="inner">
+      <div class="section-title">
+        <h2>TIC 品牌释义</h2>
+        <p>Talent · Insight · Check —— 三大核心，构筑科学人才评估体系</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+        <div style="text-align:center;padding:32px 20px;border-radius:12px;border:1px solid var(--border);box-shadow:var(--shadow);">
+          <div style="width:60px;height:60px;margin:0 auto 16px;background:var(--prim);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;font-weight:800;">T</div>
+          <h3 style="font-size:16px;color:var(--prim);margin-bottom:4px;">Talent 人才</h3>
+          <p style="font-size:13px;color:var(--text-muted);line-height:1.8;margin:0;">立足人才本身，以人为核心，关注个体的特质、能力与发展潜力，让每一份人才评价都回归人的价值本身。</p>
+        </div>
+        <div style="text-align:center;padding:32px 20px;border-radius:12px;border:1px solid var(--border);box-shadow:var(--shadow);">
+          <div style="width:60px;height:60px;margin:0 auto 16px;background:var(--accent);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;font-weight:800;">I</div>
+          <h3 style="font-size:16px;color:var(--prim);margin-bottom:4px;">Insight 洞察</h3>
+          <p style="font-size:13px;color:var(--text-muted);line-height:1.8;margin:0;">依托专业测评工具与数据分析模型，深度洞察人员的内在特质、行为倾向与潜在能力，透过表象看本质。</p>
+        </div>
+        <div style="text-align:center;padding:32px 20px;border-radius:12px;border:1px solid var(--border);box-shadow:var(--shadow);">
+          <div style="width:60px;height:60px;margin:0 auto 16px;background:#2e7d32;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;font-weight:800;">C</div>
+          <h3 style="font-size:16px;color:var(--prim);margin-bottom:4px;">Check 测评</h3>
+          <p style="font-size:13px;color:var(--text-muted);line-height:1.8;margin:0;">通过科学严谨的测评体系，对人才素质进行系统性评估与验证，为企业人力资源管理与人才决策提供可靠的数据支撑。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="inner">
+      <div class="section-title">
+        <h2>核心能力</h2>
+        <p>覆盖人才全生命周期的科学评估体系</p>
+      </div>
+      <div class="talent-grid">
+        <div class="talent-card">
+          <div class="icon"><i class="fas fa-brain"></i></div>
+          <h3>多维度测评</h3>
+          <p>涵盖职业性格、认知能力、情商素养、团队适配等20+核心维度，全面刻画人才画像。</p>
+        </div>
+        <div class="talent-card">
+          <div class="icon"><i class="fas fa-shield-alt"></i></div>
+          <h3>科学严谨</h3>
+          <p>基于经典心理学量表与大数据常模校验，信效度经权威机构认证，为企业提供可靠依据。</p>
+        </div>
+        <div class="talent-card">
+          <div class="icon"><i class="fas fa-chart-line"></i></div>
+          <h3>智能报告</h3>
+          <p>自动生成可视化评估报告，风险预警、岗位适配度一键输出，助力HR高效决策。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="inner">
+      <div class="section-title">
+        <h2>适用场景</h2>
+        <p>灵活适配企业多样化的评估需求</p>
+      </div>
+      <div class="solution-grid">
+        <div class="solution-card">
+          <h3><i class="fas fa-user-plus"></i> 招聘测评</h3>
+          <p>在招聘环节快速筛选候选人，通过标准化测评工具客观评估岗位匹配度，降低误招风险，提升招聘效率。</p>
+        </div>
+        <div class="solution-card">
+          <h3><i class="fas fa-users-cog"></i> 人才盘点</h3>
+          <p>定期对企业现有人才进行结构化盘点，识别高潜人才与关键岗位继任梯队，支撑组织发展决策。</p>
+        </div>
+        <div class="solution-card">
+          <h3><i class="fas fa-handshake"></i> 团队效能</h3>
+          <p>通过对团队成员的性格与行为风格评估，优化团队构成，减少内部冲突，提升协作效率与凝聚力。</p>
+        </div>
+        <div class="solution-card">
+          <h3><i class="fas fa-graduation-cap"></i> 校企合作</h3>
+          <p>为校企合作项目提供标准化评估工具，快速识别优秀毕业生潜力，实现高效人才定向输送。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== 产品页 ===== -->
+<div class="page" id="page-product">
+  <section class="hero" style="padding:80px 0 56px;">
+    <div class="inner">
+      <h1 style="font-size:32px;">产品中心</h1>
+      <p style="max-width:600px;">四大核心产品，覆盖不同场景的人才评估需求</p>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="inner">
+      <div class="product-grid">
+        <!-- 人才测评系统 -->
+        <div class="product-card">
+          <div class="icon"><i class="fas fa-cubes"></i></div>
+          <h3>人才测评系统</h3>
+          <div class="subtitle">一站式在线评估平台</div>
+          <p>智善TIC 核心产品，集题库管理、任务下发、在线作答、自动评分、报告生成于一体。支持多级权限管理（超管→分公司HR→员工），适配各类企业组织架构。采用心理学经典量表结合大数据常模，提供多维度人才画像与岗位适配度分析。</p>
+          <span class="tag">任务管理</span>
+          <span class="tag">自动评分</span>
+          <span class="tag">可视化报告</span>
+          <span class="tag">多级权限</span>
+        </div>
+
+        <!-- 大五职业性格测评 -->
+        <div class="product-card">
+          <div class="icon"><i class="fas fa-dna"></i></div>
+          <h3>大五职业性格测评</h3>
+          <div class="subtitle">Big Five 职业性格评估</div>
+          <p>基于国际经典大五人格模型（OCEAN），从开放性、尽责性、外向性、宜人性、神经质五大维度评估职业性格特征。结合中国职场常模数据，精准预测候选人在特定岗位上的适配性与发展潜力。适用于管理培训生选拔、核心岗位招聘等场景。</p>
+          <span class="tag">OCEAN模型</span>
+          <span class="tag">职业适配</span>
+          <span class="tag">发展预测</span>
+        </div>
+
+        <!-- PDP 性格测试 -->
+        <div class="product-card">
+          <div class="icon"><i class="fas fa-tachometer-alt"></i></div>
+          <h3>PDP 性格测试</h3>
+          <div class="subtitle">行为风格与团队角色诊断</div>
+          <p>PDP（Professional Dyna-Metric Programs）性格测试，将个体行为风格分为老虎、孔雀、考拉、猫头鹰、变色龙五种类型，快速识别个人的沟通风格、决策偏好与团队角色。广泛用于团队组建、管理者辅导及领导力发展，帮助企业知人善任、优化协作。</p>
+          <span class="tag">行为风格</span>
+          <span class="tag">团队角色</span>
+          <span class="tag">领导力发展</span>
+        </div>
+
+        <!-- MBTI 人格测试 -->
+        <div class="product-card">
+          <div class="icon"><i class="fas fa-compass"></i></div>
+          <h3>MBTI 人格测试</h3>
+          <div class="subtitle">职业倾向与人格类型分析</div>
+          <p>基于荣格心理类型理论的MBTI测评工具，从外向/内向、感觉/直觉、思考/情感、判断/知觉四个维度划分16种人格类型。帮助企业了解候选人的职业偏好、工作风格与适合的岗位方向，广泛用于校园招聘、实习生选拔及职业生涯规划。</p>
+          <span class="tag">16型人格</span>
+          <span class="tag">职业倾向</span>
+          <span class="tag">校园招聘</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== 解决方案页 ===== -->
+<div class="page" id="page-solutions">
+  <section class="hero" style="padding:80px 0 56px;">
+    <div class="inner">
+      <h1 style="font-size:32px;">解决方案</h1>
+      <p style="max-width:600px;">四大场景方案，助力企业人才战略落地</p>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="inner">
+      <div class="solution-grid">
+        <div class="solution-card">
+          <h3><i class="fas fa-user-plus"></i> 招聘测评方案</h3>
+          <p>为企业提供全流程人才筛选解决方案，从简历筛选到最终录用，科学评估每一位候选人的岗位匹配度。</p>
+          <div class="feat-list">
+            <span>快速筛选</span><span>岗位匹配评估</span><span>校园招聘</span><span>社会招聘</span>
+          </div>
+        </div>
+        <div class="solution-card">
+          <h3><i class="fas fa-users-cog"></i> 人才盘点方案</h3>
+          <p>为企业提供定期人才结构分析与评估服务，识别高潜人才、关键岗位继任者，支撑组织战略发展。</p>
+          <div class="feat-list">
+            <span>九宫格盘点</span><span>高潜识别</span><span>继任计划</span><span>人才梯队</span>
+          </div>
+        </div>
+        <div class="solution-card">
+          <h3><i class="fas fa-handshake"></i> 团队效能方案</h3>
+          <p>通过对团队成员行为风格与协作模式的深度分析，优化沟通方式与角色分工，提升团队整体战斗力。</p>
+          <div class="feat-list">
+            <span>团队诊断</span><span>角色优化</span><span>冲突解决</span><span>领导力辅导</span>
+          </div>
+        </div>
+        <div class="solution-card">
+          <h3><i class="fas fa-graduation-cap"></i> 校企合作方案</h3>
+          <p>为高校与企业的联合培养项目提供标准化人才评估工具，精准识别优秀毕业生潜力，打造高效人才输送通道。</p>
+          <div class="feat-list">
+            <span>联合培养</span><span>定向选拔</span><span>潜力评估</span><span>实习匹配</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 人才和招聘 -->
+  <section class="section">
+    <div class="inner">
+      <div class="section-title">
+        <h2>人才与招聘</h2>
+        <p>围绕人才评估、招聘赋能与梯队搭建，打造可持续的人才竞争优势</p>
+      </div>
+      <div class="talent-grid">
+        <div class="talent-card">
+          <div class="icon"><i class="fas fa-user-check"></i></div>
+          <h3>人才评估体系</h3>
+          <p>建立标准化、多维度的人才评估机制，从性格特质到岗位胜任力，实现人才画像精准刻画，让用人决策从经验驱动转向数据驱动。</p>
+        </div>
+        <div class="talent-card">
+          <div class="icon"><i class="fas fa-bolt"></i></div>
+          <h3>招聘效能升级</h3>
+          <p>通过在线测评前置筛选，大幅提升简历筛选效率。标准化的评估维度确保同一岗位候选人横向可比，降低误招率与培训成本。</p>
+        </div>
+        <div class="talent-card">
+          <div class="icon"><i class="fas fa-layer-group"></i></div>
+          <h3>人才梯队搭建</h3>
+          <p>结合测评结果与绩效数据，识别高潜人才，规划职业发展路径。建立从基层到中高层管理者的持续培养机制，保障组织人才供给链。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== 关于我们页 ===== -->
+<div class="page" id="page-about">
+  <section class="hero" style="padding:80px 0 56px;">
+    <div class="inner">
+      <h1 style="font-size:32px;">关于我们</h1>
+      <p style="max-width:600px;">以科学与创新驱动人才决策</p>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="inner">
+      <div class="about-grid">
+        <div class="about-intro">
+          <h3>企业简介</h3>
+          <p>智善TIC，由 Talent（人才）、Insight（洞察）、Check（测评）三大核心组成。立足人才本身，依托专业测评工具，深度洞察人员特质与潜能，为企业人力资源管理提供科学支撑。系统由智善内部人力资源专家团队主导搭建，是面向企业内部人才管理打造的专业人才评估解决方案。我们专注于将心理学研究成果与人力资源数字化实践深度融合，为企业提供科学、高效、便捷的人才评估服务。</p>
+          <p>项目核心团队由来自心理学、人力资源、数据科学领域的专家组成，拥有十余年的人才评估与组织发展实战经验。我们致力于帮助企业精准识别人才、科学配置团队、持续培养发展，为内部人才盘点、招聘选拔、梯队建设提供可靠的数据支撑。</p>
+          <p>智善TIC人才测评体系致力于为企业提供科学、专业的人才评估服务，助力企业实现精准用人、科学育人的目标。</p>
+        </div>
+        <div class="about-advantages">
+          <h3>核心优势</h3>
+          <div class="advantage-item">
+            <div class="icon"><i class="fas fa-flask"></i></div>
+            <div>
+              <h4>科学理论支撑</h4>
+              <p>基于心理学经典理论模型，结合中国本土职场大数据常模，确保测评体系的科学性与适用性。</p>
+            </div>
+          </div>
+          <div class="advantage-item">
+            <div class="icon"><i class="fas fa-microchip"></i></div>
+            <div>
+              <h4>技术驱动</h4>
+              <p>AI智能评分与异常检测引擎，自动识别无效作答，确保评估结果的真实性与可靠性。</p>
+            </div>
+          </div>
+          <div class="advantage-item">
+            <div class="icon"><i class="fas fa-lock"></i></div>
+            <div>
+              <h4>安全合规</h4>
+              <p>严格的数据隐私保护体系，测评数据加密存储，符合国家个人信息保护法规要求。</p>
+            </div>
+          </div>
+          <div class="advantage-item">
+            <div class="icon"><i class="fas fa-headset"></i></div>
+            <div>
+              <h4>全程服务</h4>
+              <p>从方案设计到结果解读，专业顾问团队一对一支持，确保测评项目落地见效。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-info">
+        <h3>联系方式</h3>
+        <div class="contact-grid">
+          <div class="contact-item">
+            <i class="fas fa-phone-alt"></i>
+            <h4>服务热线</h4>
+            <p>0755-82561500</p>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <h4>电子邮箱</h4>
+            <p>zsshr@chngalaxy.com</p>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <h4>公司地址</h4>
+            <p>广东省深圳市龙岗区雅宝路1号</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== 管理员登录页 ===== -->
+<div class="page" id="page-login">
+  <div class="login-page">
+    <div class="login-card">
+      <div class="logo"><i class="fas fa-star"></i></div>
+      <h1>智善TIC人才测评</h1>
+      <p class="subtitle">企业管理后台登录</p>
+      <form id="loginForm">
+        <div class="form-group">
+          <label>用户名</label>
+          <input type="text" id="username" placeholder="请输入管理员用户名" required />
+        </div>
+        <div class="form-group">
+          <label>密码</label>
+          <input type="password" id="password" placeholder="请输入密码" required />
+        </div>
+        <div class="error-msg" id="loginError" style="display:none;"></div>
+        <button type="submit" class="btn-login">登 录</button>
+      </form>
+      <p style="text-align:center;margin-top:16px;font-size:12px;color:var(--text-light);">仅限企业授权管理员登录使用</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Footer ===== -->
+<div class="footer">
+  <div class="inner">
+    <p>&copy; 2026 智善TIC人才测评体系 版权所有 | <a href="javascript:void(0)" onclick="showPage('about')">关于我们</a> | <a href="javascript:void(0)" onclick="showPage('product')">产品中心</a></p>
+  </div>
+</div>
+
+<script>
+// 页面切换
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-links a:not(.nav-cta)').forEach(function(a) { a.classList.remove('active'); });
+  var navIdx = { home: 0, product: 1, solutions: 2, about: 3 };
+  if (navIdx[id] !== undefined) {
+    document.querySelectorAll('.nav-links a:not(.nav-cta)')[navIdx[id]].classList.add('active');
+  }
+  window.scrollTo(0, 0);
+}
+
+// 登录处理
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  var user = document.getElementById('username').value.trim();
+  var pwd = document.getElementById('password').value;
+  var errEl = document.getElementById('loginError');
+  if (!user || !pwd) {
+    errEl.textContent = '请输入用户名和密码';
+    errEl.style.display = 'block';
+    return;
+  }
+  // 简单前端模拟：跳转到系统后台
+  errEl.style.display = 'none';
+  var apiUrl = window.location.origin + '/api/token/';
+fetch(apiUrl, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ username: user, password: pwd })
+}).then(function(r) {
+  if (!r.ok) { throw new Error('用户名或密码错误'); }
+  return r.json();
+}).then(function(data) {
+  localStorage.setItem('token', data.access);
+  localStorage.setItem('refresh', data.refresh);
+  // 获取用户信息
+  fetch('/api/me/', { headers: { 'Authorization': 'Bearer ' + data.access } })
+    .then(function(r) { return r.json(); })
+    .then(function(me) {
+      localStorage.setItem('user', JSON.stringify(me));
+      window.location.href = window.location.origin + '/dashboard/';
+    })
+    .catch(function() {
+      window.location.href = window.location.origin + '/dashboard/';
+    });
+}).catch(function(e) {
+  errEl.textContent = e.message || '登录失败，请重试';
+  errEl.style.display = 'block';
+});
+});
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+

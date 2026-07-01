@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>智善 TIC | Talent 人才 · Insight 洞察 · Check 测评</title>
+<link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+<style>
+:root{--bg:#0d0b1a;--bg2:#151230;--bg3:#1a1640;--bg4:#201c50;--prim:#5b4dcc;--prim-l:#7c6cf0;--prim-ll:#9d8fff;--blue:#3a7bd5;--blue-l:#5b9cf5;--text:#e8eaf6;--text-l:#9890b8;--text-m:#605888;--card:#151230;--card-h:#1c1848;--border:rgba(91,77,204,0.15);--glow:rgba(91,77,204,0.12);--font:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden}
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(13,11,26,0.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);height:68px}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:68px;display:flex;align-items:center;justify-content:space-between}
+.nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff}
+.nav-brand .logo{width:34px;height:34px;background:linear-gradient(135deg,var(--prim),var(--blue));display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff}
+.nav-brand .name{font-size:16px;font-weight:700;letter-spacing:.5px}
+.nav-brand .name small{font-size:10px;color:var(--prim-l);letter-spacing:1.5px;display:block;font-weight:400}
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-links a{padding:8px 16px;color:rgba(255,255,255,0.6);text-decoration:none;font-size:14px;font-weight:500;cursor:pointer;transition:all .12s}
+.nav-links a:hover{color:#fff;background:var(--glow)}
+.nav-links a.active{color:var(--prim-l);background:var(--glow)}
+.nav-links a.nav-cta{background:linear-gradient(135deg,var(--prim),var(--blue));color:#fff;font-weight:600;padding:8px 18px;text-decoration:none}
+.nav-links a.nav-cta:hover{opacity:.9}
+.nav-toggle{display:none;background:none;border:none;color:#fff;font-size:22px;cursor:pointer}
+.page{display:none;padding-top:68px;min-height:100vh}
+.page.active{display:block}
+.hero{background:linear-gradient(135deg,#0d0b1a 0%,#151230 40%,#1a1640 70%,#201c50 100%);padding:100px 24px 70px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 20% 40%,rgba(91,77,204,0.08) 0%,transparent 60%),radial-gradient(ellipse at 80% 60%,rgba(58,123,213,0.06) 0%,transparent 50%);pointer-events:none}
+.inner{max-width:1200px;margin:0 auto;position:relative;z-index:1}
+.hero h1{font-size:44px;font-weight:800;color:#fff;line-height:1.18;max-width:700px;margin-bottom:16px;letter-spacing:-.5px}
+.hero h1 em{background:linear-gradient(135deg,var(--prim-l),var(--blue-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:normal}
+.hero p{font-size:16px;color:var(--text-l);max-width:540px;line-height:1.9;margin-bottom:28px}
+.hero .stats{display:flex;gap:48px;margin-top:48px;padding-top:40px;border-top:1px solid var(--border);flex-wrap:wrap}
+.hero .stats div h3{font-size:32px;font-weight:700;background:linear-gradient(135deg,var(--prim-l),var(--blue-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .stats div p{font-size:12px;margin:0;color:var(--text-m)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer;border:none;transition:all .12s}
+.btn-prim{background:linear-gradient(135deg,var(--prim),var(--blue));color:#fff}
+.btn-prim:hover{opacity:.9;box-shadow:0 0 30px var(--glow)}
+.btn-outline{border:1px solid var(--border);color:#fff;background:transparent}
+.btn-outline:hover{border-color:var(--prim-l);color:var(--prim-l);background:var(--glow)}
+.section{padding:80px 24px}
+.section-alt{background:var(--bg2)}
+.section-title{font-size:28px;font-weight:700;color:#fff;margin-bottom:12px}
+.section-subtitle{color:var(--text-l);font-size:15px;max-width:600px;line-height:1.8}
+.section-header{text-align:center;margin-bottom:48px}
+.section-label{font-size:11px;font-weight:600;color:var(--prim-l);letter-spacing:2.5px;margin-bottom:8px}
+.page-hero{background:linear-gradient(135deg,var(--bg),var(--bg2));padding:100px 24px 60px;text-align:center;border-bottom:1px solid var(--border)}
+.page-hero h1{font-size:36px;font-weight:700;color:#fff;margin-bottom:10px}
+.page-hero p{font-size:15px;color:var(--text-l);max-width:540px;margin:0 auto}
+.page-hero .badge{display:inline-block;padding:4px 14px;border:1px solid var(--border);color:var(--prim-l);font-size:11px;letter-spacing:2px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--border);padding:32px 28px;transition:all .12s}
+.card:hover{border-color:rgba(91,77,204,0.3)}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.footer{background:var(--bg);border-top:1px solid var(--border);padding:48px 24px 28px}
+.footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:28px}
+.footer-brand h3{color:#fff;font-size:16px;margin-bottom:6px}
+.footer-brand p{color:var(--text-m);font-size:13px;max-width:280px;line-height:1.7}
+.footer-col h4{color:var(--prim-l);font-size:12px;letter-spacing:1.5px;margin-bottom:12px}
+.footer-col a{display:block;color:var(--text-m);text-decoration:none;font-size:13px;padding:4px 0;cursor:pointer}
+.footer-col a:hover{color:var(--prim-l)}
+.footer-bot{border-top:1px solid var(--border);padding-top:20px;display:flex;justify-content:space-between;max-width:1200px;margin:0 auto;flex-wrap:wrap}
+.footer-bot p{color:var(--text-m);font-size:12px}
+@media(max-width:768px){
+.nav-links{display:none;flex-direction:column;position:absolute;top:68px;left:0;right:0;background:rgba(13,11,26,0.98);border-bottom:1px solid var(--border);padding:16px}
+.nav-links.open{display:flex}
+.nav-toggle{display:block}
+.grid-3,.grid-4{grid-template-columns:1fr}
+.grid-2{grid-template-columns:1fr}
+.footer-inner{grid-template-columns:1fr 1fr}
+.hero h1{font-size:28px}
+}
+.product-card{cursor:pointer}.product-card .p-more{display:none;padding-top:14px;margin-top:14px;border-top:1px solid var(--border)}.product-card.open .p-more{display:block}
+</style>
+</head>
+<body>
+<nav class="navbar"><div class="nav-inner">
+<a href="#" class="nav-brand" onclick="showPage('home')"><div class="logo">T</div><div class="name">智善 TIC<small>Talent 人才 · Insight 洞察 · Check 测评</small></div></a>
+<button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')"><i class="fas fa-bars"></i></button>
+<div class="nav-links">
+<a onclick="showPage('product')">产品</a>
+<a onclick="showPage('solutions')">解决方案</a>
+<a onclick="showPage('talent')">人才和招聘</a>
+<a onclick="showPage('about')">关于我们</a>
+<a href="http://127.0.0.1:8000/dashboard/" class="nav-cta"><i class="fas fa-user-shield"></i> 企业管理员登录</a>
+</div></div></nav>
+<div id="page-home" class="page active"><div class="hero"><div class="inner"><div style="display:inline-block;padding:4px 14px;border:1px solid var(--border);color:var(--prim-l);font-size:11px;letter-spacing:2px;margin-bottom:16px;">Talent 人才 · Insight 洞察 · Check 测评</div>
+<h1>智善 TIC &mdash; <em>Talent 人才 · Insight 洞察 · Check 测评</em></h1>
+<p>智善 TIC 是专为内部人才管理打造的一体化测评体系，通过科学、专业、标准化的工具，实现精准识人、科学用人、高效育人，为组织人才发展提供可靠支撑。</p>
+<div style="display:flex;gap:12px;flex-wrap:wrap;"><a class="btn btn-prim" onclick="showPage('product')"><i class="fas fa-arrow-right"></i> 探索产品</a><a class="btn btn-outline" onclick="showPage('solutions')"><i class="fas fa-building"></i> 行业方案</a></div>
+<div class="stats"><div><h3>50,000+</h3><p>评估人次</p></div><div><h3>8大</h3><p>评估维度</p></div><div><h3>99.9%</h3><p>数据安全</p></div></div></div></div>
+<section class="section"><div class="inner"><div class="section-header"><div class="section-label">Why TIC</div><h2 class="section-title">智善 TIC 核心价值</h2><p class="section-subtitle">AI驱动的人才科学，为企业人才战略提供智能决策支持</p></div>
+<div class="grid-4"><div class="card" style="text-align:center;padding:28px 20px;"><div style="width:44px;height:44px;background:linear-gradient(135deg,var(--prim),var(--blue));display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:#fff;font-size:18px;"><i class="fas fa-rocket"></i></div><h3 style="font-size:16px;margin-bottom:6px;">快速部署</h3><p style="color:var(--text-l);font-size:13px;line-height:1.6;">SaaS云端部署，注册即用，无需复杂IT支持。</p></div><div class="card" style="text-align:center;padding:28px 20px;"><div style="width:44px;height:44px;background:linear-gradient(135deg,var(--prim),var(--blue));display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:#fff;font-size:18px;"><i class="fas fa-headset"></i></div><h3 style="font-size:16px;margin-bottom:6px;">专业服务</h3><p style="color:var(--text-l);font-size:13px;line-height:1.6;">资深顾问团队，提供测评方案设计与解读服务。</p></div><div class="card" style="text-align:center;padding:28px 20px;"><div style="width:44px;height:44px;background:linear-gradient(135deg,var(--prim),var(--blue));display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:#fff;font-size:18px;"><i class="fas fa-brain"></i></div><h3 style="font-size:16px;margin-bottom:6px;">AI 智能评估</h3><p style="color:var(--text-l);font-size:13px;line-height:1.6;">基于机器学习算法，实现人才评估的智能化分析。</p></div>
+<div class="card" style="text-align:center;padding:28px 20px;"><div style="width:44px;height:44px;background:linear-gradient(135deg,var(--prim),var(--blue));display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:#fff;font-size:18px;"><i class="fas fa-chart-bar"></i></div><h3 style="font-size:16px;margin-bottom:6px;">多维度分析</h3><p style="color:var(--text-l);font-size:13px;line-height:1.6;">八大核心评估维度，全方位刻画人才画像。</p></div>
+<div class="card" style="text-align:center;padding:28px 20px;"><div style="width:44px;height:44px;background:linear-gradient(135deg,var(--prim),var(--blue));display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:#fff;font-size:18px;"><i class="fas fa-shield-alt"></i></div><h3 style="font-size:16px;margin-bottom:6px;">数据安全保障</h3><p style="color:var(--text-l);font-size:13px;line-height:1.6;">企业数据加密存储，严格权限管控。</p></div>
+<div class="card" style="text-align:center;padding:28px 20px;"><div style="width:44px;height:44px;background:linear-gradient(135deg,var(--prim),var(--blue));display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:#fff;font-size:18px;"><i class="fas fa-cogs"></i></div><h3 style="font-size:16px;margin-bottom:6px;">灵活部署</h3><p style="color:var(--text-l);font-size:13px;line-height:1.6;">支持云端与本地部署，快速集成HR系统。</p></div></div></div></section>
+<section class="section section-alt"><div class="inner"><div class="section-header"><div class="section-label">Technology</div><h2 class="section-title">核心技术优势</h2><p class="section-subtitle">融合多项前沿技术，构建专业、可靠的人才评估体系</p></div>
+<div class="grid-3" style="text-align:center;"><div class="card" style="padding:36px 24px;"><div style="font-size:36px;color:var(--prim-l);margin-bottom:14px;"><i class="fas fa-robot"></i></div><h3 style="font-size:17px;margin-bottom:8px;">机器学习引擎</h3><p style="color:var(--text-l);font-size:13px;">基于大规模人才数据训练的AI模型。</p></div>
+<div class="card" style="padding:36px 24px;"><div style="font-size:36px;color:var(--prim-l);margin-bottom:14px;"><i class="fas fa-database"></i></div><h3 style="font-size:17px;margin-bottom:8px;">大数据分析平台</h3><p style="color:var(--text-l);font-size:13px;">处理海量评估数据，实时生成多维分析报告。</p></div>
+<div class="card" style="padding:36px 24px;"><div style="font-size:36px;color:var(--prim-l);margin-bottom:14px;"><i class="fas fa-lock"></i></div><h3 style="font-size:17px;margin-bottom:8px;">隐私计算技术</h3><p style="color:var(--text-l);font-size:13px;">采用隐私计算与数据脱敏技术。</p></div></div></div></section>
+<section class="section"><div class="inner" style="text-align:center;"><h2 class="section-title">开启人才测评体系之旅</h2><p class="section-subtitle" style="margin:0 auto 28px;">立即体验智善 TIC</p><a href="http://127.0.0.1:8000/dashboard/" class="btn btn-prim" style="font-size:15px;padding:14px 36px;"><i class="fas fa-arrow-right"></i> 进入管理后台</a></div></section></div>
+<div id="page-product" class="page"><div class="page-hero"><div class="badge">Products</div><h1>核心产品</h1><p>人才测评系统 · 大五职业性格测评 · PDP 性格测试 · MBTI 人格测试</p></div><section class="section"><div class="inner"><div class="grid-4"><div class="card" style="padding:28px 20px;"><div style="width:44px;height:44px;background:linear-gradient(135deg,var(--prim),var(--blue));display:flex;align-items:center;justify-content:center;margin-bottom:12px;color:#fff;font-size:18px;"><i class="fas fa-cubes"></i></div><h3 style="font-size:16px;margin-bottom:8px;">人才测评系统</h3><p style="color:var(--text-l);font-size:13px;line-height:1.7;">基于AI技术的人才测评平台，全面支持岗位胜任力评估、360度评估、入职筛选等场景。</p><div class="p-more"><h4 style="font-size:14px;color:var(--prim-l);margin-bottom:6px;">产品详情</h4><p style="color:var(--text-l);font-size:13px;line-height:1.7;margin-bottom:8px;">通过多维度科学评估，全面刻画人才画像，为招聘选拔、岗位配置、人才培养提供数据驱动的决策依据。系统支持自定义评估模型，灵活适配不同岗位需求。</p><p style="color:var(--text-l);font-size:13px;"><strong style="color:var(--text);">适用场景：</strong>招聘选拔、内部竞聘、岗位配置、人才盘点</p></div></div><div class="card" style="padding:28px 20px;"><div style="width:44px;height:44px;background:linear-gradient(135deg,var(--blue),var(--prim));display:flex;align-items:center;justify-content:center;margin-bottom:12px;color:#fff;font-size:18px;"><i class="fas fa-chart-pie"></i></div><h3 style="font-size:16px;margin-bottom:8px;">大五职业性格测评</h3><p style="color:var(--text-l);font-size:13px;line-height:1.7;">基于大五人格理论的标准化测评工具，从开放性、尽责性、外向性、宜人性、神经质五大维度全面刻画职业性格。</p><div class="p-more"><h4 style="font-size:14px;color:var(--prim-l);margin-bottom:6px;">产品详情</h4><p style="color:var(--text-l);font-size:13px;line-height:1.7;margin-bottom:8px;">大五人格是国际公认的人格评估标准模型，广泛适用于职业匹配、团队建设、领导力发展等场景。通过精准测量五个核心维度，预测个人在职场中的行为表现与发展潜力。</p><p style="color:var(--text-l);font-size:13px;"><strong style="color:var(--text);">适用场景：</strong>岗位匹配、团队配置、职业规划、人才发展</p></div></div><div class="card" style="padding:28px 20px;"><div style="width:44px;height:44px;background:linear-gradient(135deg,var(--prim),var(--blue));display:flex;align-items:center;justify-content:center;margin-bottom:12px;color:#fff;font-size:18px;"><i class="fas fa-user-circle"></i></div><h3 style="font-size:16px;margin-bottom:8px;">PDP性格测试</h3><p style="color:var(--text-l);font-size:13px;line-height:1.7;">PDP（个人发展分析）性格测试，将人群分为老虎、孔雀、考拉、猫头鹰、变色龙五种类型，快速识别行为风格与沟通偏好。</p><div class="p-more"><h4 style="font-size:14px;color:var(--prim-l);margin-bottom:6px;">产品详情</h4><p style="color:var(--text-l);font-size:13px;line-height:1.7;margin-bottom:8px;">PDP是全球知名的人力资源管理工具，被广泛应用于企业人才选拔与团队管理。通过评估个人的行为特质、沟通风格与决策模式，帮助企业优化团队配置，提升协作效率。</p><p style="color:var(--text-l);font-size:13px;"><strong style="color:var(--text);">适用场景：</strong>团队建设、沟通优化、领导力发展、冲突管理</p></div></div><div class="card" style="padding:28px 20px;"><div style="width:44px;height:44px;background:linear-gradient(135deg,var(--blue),var(--prim));display:flex;align-items:center;justify-content:center;margin-bottom:12px;color:#fff;font-size:18px;"><i class="fas fa-users"></i></div><h3 style="font-size:16px;margin-bottom:8px;">MBTI人格测试</h3><p style="color:var(--text-l);font-size:13px;line-height:1.7;">经典MBTI职业人格测试，从内外向、感觉直觉、思维情感、判断感知四个维度划分16种人格类型，助力自我认知与职业发展。</p><div class="p-more"><h4 style="font-size:14px;color:var(--prim-l);margin-bottom:6px;">产品详情</h4><p style="color:var(--text-l);font-size:13px;line-height:1.7;margin-bottom:8px;">MBTI是全球应用最广泛的职业人格测评工具之一，帮助个人深入了解自己的性格类型与行为倾向。通过16种人格类型的系统分析，为企业提供人才适配、职业规划与团队融合的科学参考。</p><p style="color:var(--text-l);font-size:13px;"><strong style="color:var(--text);">适用场景：</strong>自我认知、职业规划、团队融合、管理发展</p></div></div></div></div></section></div>page-solutions" class="page"><div class="page-hero"><div class="badge">Solutions</div><h1>解决方案</h1><p>覆盖内部招聘与竞聘、人才盘点、团队效能提升、员工成长发展、干部选拔与领导力培养，支持人才全生命周期管理与组织能力持续升级</p></div><section class="section"><div class="inner" style="display:grid;gap:16px;"><div class="card" style="display:flex;gap:16px;align-items:flex-start;padding:24px;"><div style="font-size:28px;color:var(--prim-l);flex-shrink:0;"><i class="fas fa-user-plus"></i></div><div><h4 style="font-size:16px;margin-bottom:4px;">内部招聘与竞聘</h4><p style="color:var(--text-l);font-size:13px;line-height:1.7;margin:0;">支持企业内部岗位竞聘与外部招聘的标准化测评流程，通过科学评估确保人岗匹配，提升招聘效率与质量。</p></div></div><div class="card" style="display:flex;gap:16px;align-items:flex-start;padding:24px;"><div style="font-size:28px;color:var(--prim-l);flex-shrink:0;"><i class="fas fa-clipboard-list"></i></div><div><h4 style="font-size:16px;margin-bottom:4px;">人才盘点</h4><p style="color:var(--text-l);font-size:13px;line-height:1.7;margin:0;">全面人才盘点解决方案，多维度评估员工能力与潜力，识别高潜人才与关键岗位继任者，为组织人才规划提供数据支撑。</p></div></div><div class="card" style="display:flex;gap:16px;align-items:flex-start;padding:24px;"><div style="font-size:28px;color:var(--prim-l);flex-shrink:0;"><i class="fas fa-users-gear"></i></div><div><h4 style="font-size:16px;margin-bottom:4px;">团队效能提升</h4><p style="color:var(--text-l);font-size:13px;line-height:1.7;margin:0;">诊断团队协作效能与沟通模式，分析团队角色配置，提供针对性的团队优化建议，助力组织效能持续提升。</p></div></div><div class="card" style="display:flex;gap:16px;align-items:flex-start;padding:24px;"><div style="font-size:28px;color:var(--prim-l);flex-shrink:0;"><i class="fas fa-graduation-cap"></i></div><div><h4 style="font-size:16px;margin-bottom:4px;">员工成长发展</h4><p style="color:var(--text-l);font-size:13px;line-height:1.7;margin:0;">基于评估结果为员工制定个性化职业发展路径与培养计划，结合培训资源推荐，实现人才持续成长。</p></div></div><div class="card" style="display:flex;gap:16px;align-items:flex-start;padding:24px;"><div style="font-size:28px;color:var(--prim-l);flex-shrink:0;"><i class="fas fa-crown"></i></div><div><h4 style="font-size:16px;margin-bottom:4px;">干部选拔与领导力培养</h4><p style="color:var(--text-l);font-size:13px;line-height:1.7;margin:0;">干部选拔评估与领导力发展计划，系统评估管理潜质与领导能力，构建企业核心人才梯队。</p></div></div></div></section></div>page-talent" class="page"><div class="page-hero"><div class="badge">Talent & Recruitment</div><h1>人才和招聘</h1><p>助力企业引才育才，为组织发展注入持续动力</p></div>
+<section class="section"><div class="inner" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+<div><h2 class="section-title">高端人才寻访</h2><p style="color:var(--text-l);font-size:14px;line-height:1.8;margin-bottom:16px;">依托丰富的人才数据库，为企业提供高端人才寻访与定向猎聘服务。</p><div class="card" style="margin-bottom:12px;"><h4 style="font-size:15px;margin-bottom:4px;">高管寻访</h4><p style="color:var(--text-l);font-size:13px;">专注CXO、VP等核心高管岗位的定向寻访</p></div><div class="card"><h4 style="font-size:15px;margin-bottom:4px;">专业人才匹配</h4><p style="color:var(--text-l);font-size:13px;">基于胜任力模型精准匹配专业人才</p></div></div>
+<div><h2 class="section-title">人才培养与发展</h2><p style="color:var(--text-l);font-size:14px;line-height:1.8;margin-bottom:16px;">基于评估结果为企业提供定制化人才培养方案。</p><div class="card" style="margin-bottom:12px;"><h4 style="font-size:15px;margin-bottom:4px;">领导力发展</h4><p style="color:var(--text-l);font-size:13px;">为中高层管理者提供定制化发展计划</p></div><div class="card"><h4 style="font-size:15px;margin-bottom:4px;">人才梯队建设</h4><p style="color:var(--text-l);font-size:13px;">构建企业人才梯队</p></div></div></div></section></div>
+<div id="page-about" class="page"><div class="page-hero"><div class="badge">About Us</div><h1>关于智善 TIC</h1><p>科学识人 · 智慧用人 · 系统育人，为组织人才发展提供可靠支撑</p></div>
+<section class="section"><div class="inner" style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;">
+<div><div class="section-label">Our Mission</div><h2 class="section-title">精准识人 · 科学用人 · 高效育人</h2><p style="color:var(--text-l);font-size:14px;line-height:1.9;">智善 TIC 是专为内部人才管理打造的一体化测评体系，通过科学工具实现精准识人、科学用人、高效育人，为组织人才发展提供可靠支撑。</p></div>
+<div class="card"><h3 style="font-size:18px;margin-bottom:16px;">八大核心评估维度</h3><div style="display:grid;gap:4px;"><div style="padding:6px 0;border-bottom:1px solid var(--border);"><strong style="font-size:14px;">认知能力</strong><span style="font-size:12px;color:var(--text-l);display:block;">逻辑思维与学习能力</span></div>
+<div style="padding:6px 0;border-bottom:1px solid var(--border);"><strong style="font-size:14px;">职业适配力</strong><span style="font-size:12px;color:var(--text-l);display:block;">岗位匹配与组织融入</span></div>
+<div style="padding:6px 0;border-bottom:1px solid var(--border);"><strong style="font-size:14px;">压力管理</strong><span style="font-size:12px;color:var(--text-l);display:block;">抗压与情绪调节</span></div>
+<div style="padding:6px 0;border-bottom:1px solid var(--border);"><strong style="font-size:14px;">职业倾向</strong><span style="font-size:12px;color:var(--text-l);display:block;">职业发展动机</span></div>
+<div style="padding:6px 0;border-bottom:1px solid var(--border);"><strong style="font-size:14px;">个性特征</strong><span style="font-size:12px;color:var(--text-l);display:block;">核心特质与行为偏好</span></div>
+<div style="padding:6px 0;border-bottom:1px solid var(--border);"><strong style="font-size:14px;">情绪智力</strong><span style="font-size:12px;color:var(--text-l);display:block;">情绪管理与人际影响</span></div>
+<div style="padding:6px 0;border-bottom:1px solid var(--border);"><strong style="font-size:14px;">团队协作</strong><span style="font-size:12px;color:var(--text-l);display:block;">团队角色与协作能力</span></div>
+<div style="padding:6px 0;"><strong style="font-size:14px;">职业风险</strong><span style="font-size:12px;color:var(--text-l);display:block;">职场适应风险评估</span></div></div></div></div></section></div>
+<footer class="footer"><div class="footer-inner"><div class="footer-brand"><h3>智善 TIC</h3><p>Talent 人才 · Insight 洞察 · Check 测评</p></div>
+<div class="footer-col"><h4>产品</h4><a onclick="showPage('product')">入职人才评估</a><a onclick="showPage('product')">胜任力评估</a><a onclick="showPage('product')">组织效能诊断</a></div>
+<div class="footer-col"><h4>关于</h4><a onclick="showPage('about')">公司介绍</a><a onclick="showPage('about')">核心维度</a></div>
+<div class="footer-col"><h4>联系</h4><a href="mailto:contact@tic-china.com">联系我们</a><a href="http://127.0.0.1:8000/dashboard/">管理员登录</a></div></div>
+<div class="footer-bot"><p>&copy; 2026 智善 TIC</p></div></footer>
+<script>
+function toggleDetail(el){el.classList.toggle("open")}
+function showPage(id){
+  document.querySelectorAll(".page").forEach(function(p){p.classList.remove("active")});
+  document.getElementById("page-"+id).classList.add("active");
+  document.querySelectorAll(".nav-links a:not(.nav-cta)").forEach(function(a){a.classList.remove("active")});
+  var idx=["product","solutions","talent","about"].indexOf(id);
+  if(idx>=0) document.querySelectorAll(".nav-links a:not(.nav-cta)")[idx].classList.add("active");
+  document.querySelector(".nav-links").classList.remove("open");window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

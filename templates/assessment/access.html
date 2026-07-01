@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}在线测评{% endblock %}
+{% block content %}
+<style>
+.access-wrap { max-width:480px; margin:60px auto; }
+.access-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:40px; text-align:center; }
+.access-card .icon { width:56px; height:56px; margin:0 auto 16px; background:linear-gradient(135deg,#1565c0,#1e88e5); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; color:#fff; }
+.access-card h2 { font-size:20px; margin-bottom:4px; }
+.access-card .desc { font-size:13px; color:var(--text-light); margin-bottom:24px; line-height:1.7; }
+.access-card .link-area { background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:8px; padding:20px; text-align:center; }
+.access-card .link-area i { font-size:32px; color:#64b5f6; margin-bottom:10px; display:block; }
+.access-card .link-area p { font-size:13px; color:var(--text-muted); margin:0; }
+.access-card .btn-home { display:inline-flex; align-items:center; gap:6px; margin-top:20px; padding:10px 24px; background:transparent; border:1px solid var(--border); border-radius:6px; color:var(--text-light); text-decoration:none; font-size:13px; transition:all 0.2s; }
+.access-card .btn-home:hover { border-color:var(--accent-blue); color:#64b5f6; }
+</style>
+<div class="access-wrap">
+  <div class="access-card">
+    <div class="icon"><i class="fas fa-link"></i></div>
+    <h2>在线测评</h2>
+    <p class="desc">请通过HR发送的测评链接或<br>扫描二维码进入作答页面</p>
+    <div class="link-area">
+      <i class="fas fa-arrow-pointer"></i>
+      <p>点击HR发送的测评链接即可直接进入<br>无需手动输入测评码</p>
+    </div>
+    <a href="/" class="btn-home"><i class="fas fa-home"></i> 返回首页</a>
+  </div>
+</div>
+{% endblock %}

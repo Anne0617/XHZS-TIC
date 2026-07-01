@@ -1,0 +1,15 @@
+{% extends 'dashboard/base.html' %}{% block title %}导入试卷{% endblock %}{% block breadcrumb %}导入试卷{% endblock %}
+{% block content %}
+<div class="page-header"><h1>导入试卷</h1></div>
+<div class="card" style="max-width:600px;">
+<p style="color:var(--text-light);margin-bottom:16px;font-size:13px;">上传 talent-survey-v2-fixed.html 格式的问卷文件，系统将自动解析并导入到对应的考试模板中。</p>
+<form method="post" enctype="multipart/form-data">
+{% csrf_token %}
+<div class="form-group"><label>选择文件 (.html)</label>
+<input type="file" name="file" accept=".html" required class="form-control"></div>
+<button type="submit" class="btn btn-accent"><i class="fas fa-upload"></i> 开始导入</button>
+<a href="{% url 'dashboard:exam_list' %}" class="btn btn-outline" style="margin-left:8px;">取消</a>
+</form>
+{% if messages %}{% for msg in messages %}<div style="margin-top:16px;padding:12px;border-radius:6px;background:{% if msg.tags == 'success' %}rgba(67,160,71,0.15){% else %}rgba(229,57,53,0.15){% endif %};color:{% if msg.tags == 'success' %}#81c784{% else %}#ef9a9a{% endif %};font-size:13px;">{{ msg }}</div>{% endfor %}{% endif %}
+</div>
+{% endblock %}

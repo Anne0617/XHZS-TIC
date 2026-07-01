@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>扫码考试 - 智善TIC人才测评</title>
+<script src="https://cdn.bootcdn.net/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:#f4f7fc;min-height:100vh;padding:20px}
+.header{text-align:center;margin-bottom:30px}
+.header h1{color:#3a5a8a;font-size:24px}
+.header p{color:#7f8c9b;margin-top:8px;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;max-width:1200px;margin:0 auto}
+.card{background:#fff;border-radius:12px;padding:24px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.card h3{color:#3a5a8a;margin-bottom:8px}
+.card .desc{color:#7f8c9b;font-size:13px;margin-bottom:16px}
+.card .qr-wrap{display:flex;justify-content:center;margin-bottom:16px;min-height:180px;align-items:center}
+.card .qr-wrap img,.card .qr-wrap canvas{max-width:180px;max-height:180px}
+.card .link{display:inline-block;padding:10px 24px;background:#4a6fa5;color:#fff;border-radius:6px;text-decoration:none;margin-top:8px}
+.card .link:hover{background:#3a5a8a}
+.footer{text-align:center;margin-top:40px;color:#b0bec5;font-size:12px}
+.actions{text-align:center;margin-top:30px}
+.actions .btn-home{display:inline-block;padding:10px 24px;background:#fff;color:#3a5a8a;border:1px solid #3a5a8a;border-radius:6px;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="header">
+    <h1>📱 扫码参加考试</h1>
+    <p>用手机扫描下方二维码，填写信息后即可开始考试</p>
+</div>
+<div class="grid">
+{% for tpl in exam_templates %}
+<div class="card">
+    <h3>{{ tpl.name }}</h3>
+    <div class="desc">{{ tpl.description|default:"-" }}</div>
+    <div class="qr-wrap" id="qr_{{ tpl.id }}"></div>
+    <a class="link" href="/assessment/enter/{{ tpl.exam_type }}/" target="_blank">📝 开始考试</a>
+</div>
+{% empty %}
+<p style="grid-column:1/-1;text-align:center;color:#999">暂无可用的考试</p>
+{% endfor %}
+</div>
+<div class="actions">
+    <a class="btn-home" href="/">← 返回首页</a>
+</div>
+<div class="footer">智善TIC人才测评体系</div>
+<script>
+{% for tpl in exam_templates %}
+new QRCode(document.getElementById("qr_{{ tpl.id }}"), {
+    text: "{{ site_url }}/assessment/enter/{{ tpl.exam_type }}/",
+    width: 180, height: 180
+});
+{% endfor %}
+</script>
+</body>
+</html>

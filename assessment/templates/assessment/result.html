@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>测评完成 - 心理测评系统</title>
+<link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; background:#f4f7fc; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
+.card { background:#fff; border-radius:12px; box-shadow:0 10px 40px rgba(0,0,0,0.1); padding:40px; width:100%; max-width:600px; }
+.card .icon { text-align:center; font-size:48px; margin-bottom:16px; }
+.card h1 { text-align:center; font-size:24px; margin-bottom:8px; }
+.card .subtitle { text-align:center; color:#7f8c9b; margin-bottom:24px; }
+.score-ring { width:120px; height:120px; border-radius:50%; margin:0 auto 20px; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:800; color:#fff; }
+.dimension-grid { display:grid; gap:12px; margin-bottom:20px; }
+.dim-item { display:flex; justify-content:space-between; align-items:center; padding:12px 16px; background:#f8fafc; border-radius:8px; }
+.dim-item .name { font-weight:600; }
+.dim-item .level { padding:2px 10px; border-radius:10px; font-size:12px; }
+.level-low { background:#d4edda; color:#155724; }
+.level-medium { background:#fff3cd; color:#856404; }
+.level-high { background:#f8d7da; color:#721c24; }
+.alert-box { padding:12px 16px; border-radius:8px; margin-bottom:16px; }
+.alert-box.warning { background:#fff3cd; color:#856404; }
+.alert-box.danger { background:#f8d7da; color:#721c24; }
+</style>
+</head>
+<body>
+<div class="card">
+    <div class="icon">{% if result.risk_level == 'low' %}&#x2705;{% else %}&#x26A0;&#xFE0F;{% endif %}</div>
+    <h1>测评完成</h1>
+    <p class="subtitle">{{ employee.name }} | {{ employee.position|default:"-" }}</p>
+    {% if result %}
+    <div class="score-ring" style="background:{% if result.risk_level == 'low' %}#27ae60{% elif result.risk_level == 'medium' %}#f39c12{% else %}#e74c3c{% endif %};">{{ result.score_percent|floatformat:0 }}%</div>
+    <p style="text-align:center;margin-bottom:16px;">
+        适配度: <strong>{{ result.fit_score }}</strong> |
+        风险: <strong>{% if result.risk_level == 'low' %}低风险{% elif result.risk_level == 'medium' %}中风险{% else %}高风险{% endif %}</strong>
+    </p>
+    {% if result.risk_tags %}<div class="alert-box warning"><i class="fas fa-info-circle"></i> {{ result.risk_tags|join:", " }}</div>{% endif %}
+    {% if result.is_abnormal %}<div class="alert-box danger"><i class="fas fa-exclamation-triangle"></i> 该作答可能存在异常，HR将复核</div>{% endif %}
+    <h3 style="margin-bottom:12px;">各维度得分</h3>
+    <div class="dimension-grid">
+    {% for code, d in result.dimension_scores.items %}
+    <div class="dim-item">
+        <span class="name">{{ d.name }}</span>
+        <span>{{ d.score|floatformat:1 }}/{{ d.max|floatformat:1 }}</span>
+        <span class="level {% if d.level == '良好' %}level-low{% elif d.level == '中风险' %}level-medium{% else %}level-high{% endif %}">{{ d.level }}</span>
+    </div>
+    {% endfor %}
+    </div>
+    {% endif %}
+    <p style="text-align:center;margin-top:24px;color:#7f8c9b;">详情请咨询企业人力资源部</p>
+</div>
+</body>
+</html>

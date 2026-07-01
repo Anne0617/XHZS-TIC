@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}在线作答{% endblock %}
+{% block content %}
+<style>:root{--bg-card:#121e36;--border:rgba(255,255,255,0.06);--radius:8px;--accent:#c62828;--accent-hover:#e53935;--bg:#0a1628;--text-light:#90a4ae;}
+.take-wrap { max-width:800px; margin:40px auto; }
+.take-header { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:24px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+.take-header h2 { font-size:16px; }
+.take-header .meta { font-size:12px; color:var(--text-light); }
+.take-header .timer { font-size:18px; font-weight:700; color:var(--accent); font-variant-numeric:tabular-nums; }
+.question-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:28px; margin-bottom:16px; }
+.question-card .q-header { display:flex; justify-content:space-between; margin-bottom:12px; }
+.question-card .q-category { font-size:11px; color:var(--text-light); text-transform:uppercase; letter-spacing:0.5px; }
+.question-card .q-num { font-size:11px; color:var(--accent); font-weight:600; }
+.question-card .q-text { font-size:15px; margin-bottom:16px; line-height:1.7; }
+.options { display:flex; flex-direction:column; gap:8px; }
+.option-item { display:flex; align-items:center; gap:10px; padding:10px 14px; border:1px solid var(--border); border-radius:4px; cursor:pointer; transition:all 0.12s; font-size:14px; }
+.option-item:hover { border-color:var(--accent); background:rgba(198,40,40,0.04); }
+.option-item input { accent-color:var(--accent); }
+.take-footer { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:20px 24px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; position:sticky; bottom:16px; }
+.take-footer .progress { font-size:13px; color:var(--text-light); }
+.take-footer .btn-submit { padding:10px 28px; background:var(--accent); color:#fff; border:none; border-radius:4px; font-size:14px; font-weight:600; cursor:pointer; }
+.take-footer .btn-submit:hover { background:var(--accent-hover); }
+</style>
+<form method="post" action="/assessment/submit/{{ assignment.access_code }}/" id="takeForm">
+{% csrf_token %}
+<div class="take-wrap">
+  <div class="take-header">
+    <div><h2>{{ task.name }}</h2><div class="meta">{{ employee.name }} | {{ task.template.name }} | {{ questions|length }} 题</div></div>
+    <div class="timer" id="timer">{{ duration_minutes }}:00</div>
+  </div>
+ {% for q in questions %}
+ <div class="question-card" data-qid="{{ q.id }}">
+    <div class="q-header"><span class="q-num">{{ forloop.counter }} / {{ questions|length }}</span></div>
+   <div class="q-text">{{ q.text }}</div>
+   <div class="options">
+      {% for opt in q.options %}
+      <label class="option-item">
+        <input type="radio" name="q_{{ q.id }}" value="{% if q.type == 'single' or q.type == 'multiple' %}{{ opt.id }}{% else %}{{ opt.score }}{% endif %}" required />
+        <span>{{ opt.label }}. {{ opt.text }}</span>
+      </label>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+  <div class="take-footer">
+    <div class="progress"><span id="answeredCount">0</span>/{{ questions|length }} 已作答</div>
+    <button type="submit" class="btn-submit"><i class="fas fa-check"></i> 提交答案</button>
+  </div>
+</div>
+</form>
+<script>
+(function(){var dur={{ duration_minutes }}*60,t=document.getElementById("timer"),ac=document.getElementById("answeredCount"),r=document.querySelectorAll('input[type="radio"]'),i=setInterval(function(){var m=Math.floor(--dur/60),s=dur%60;t.textContent=m.toString().padStart(2,'0')+':'+s.toString().padStart(2,'0');if(dur<=0){clearInterval(i);document.getElementById("takeForm").submit()}},1000);r.forEach(function(el){el.addEventListener('change',function(){ac.textContent=document.querySelectorAll('input[type="radio"]:checked').length})})})();
+</script>
+{% endblock %}

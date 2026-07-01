@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>星河智善 · 人才测评问卷系统 v2.0</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f6fa; color: #2c2c2a; line-height: 1.7; }
+.container { max-width: 800px; margin: 0 auto; padding: 20px 16px; }
+
+/* Header */
+.header { text-align: center; padding: 28px 20px; background: linear-gradient(135deg, #185FA5 0%, #378ADD 100%); color: #fff; border-radius: 12px; margin-bottom: 24px; }
+.header h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+.header p { font-size: 13px; opacity: 0.85; }
+.header .meta { font-size: 11px; opacity: 0.7; margin-top: 8px; }
+
+/* Tabs */
+.tabs { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
+.tab-btn { padding: 8px 18px; border: 1px solid #ddd; border-radius: 24px; background: #fff; cursor: pointer; font-size: 13px; transition: all .2s; }
+.tab-btn:hover { border-color: #378ADD; }
+.tab-btn.active { background: #185FA5; color: #fff; border-color: #185FA5; font-weight: 500; }
+
+.tab-panel { display: none; animation: fadeIn .35s ease; }
+.tab-panel.active { display: block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+
+/* Section */
+.section-head { display: flex; gap: 14px; align-items: center; margin-bottom: 18px; }
+.section-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+.section-info h2 { font-size: 17px; font-weight: 600; }
+.section-info p { font-size: 12.5px; color: #888; margin-top: 2px; }
+
+.tags { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+.tag { padding: 4px 14px; border-radius: 16px; font-size: 12px; font-weight: 500; }
+
+/* Question Block */
+.q-block { background: #fff; border-radius: 10px; padding: 18px 20px; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #eee; }
+.q-title { font-size: 14.5px; font-weight: 600; padding: 8px 14px; background: #f8f9fb; border-radius: 8px; margin-bottom: 14px; border-left: 4px solid #378ADD; }
+.q-item { padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+.q-item:last-child { border-bottom: none; }
+.scale { display: flex; justify-content: space-between; padding: 4px 24px 10px; font-size: 11px; color: #aaa; }
+.reverse { color: #999; font-size: 11.5px; }
+
+/* Ocean Cards */
+.ocean-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 18px; }
+.ocean-card { background: #fff; border-radius: 8px; padding: 14px; border-top: 3px solid #ccc; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+.ocean-card h4 { font-size: 13px; margin-bottom: 3px; }
+.ocean-card p { font-size: 11px; color: #888; }
+
+/* PDP Cards */
+.pdp-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 18px; }
+.pdp-card { text-align: center; padding: 16px 10px; border-radius: 10px; }
+.pdp-card .icon { font-size: 28px; margin-bottom: 6px; }
+.pdp-card h4 { font-size: 13px; margin-bottom: 2px; }
+.pdp-card span { font-size: 11px; }
+
+/* PDP Question */
+.pdp-q { padding: 10px 0; border-bottom: 1px solid #f0f0f0; line-height: 1.9; }
+.pdp-q:last-child { border-bottom: none; }
+.pdp-opt { display: inline-block; padding: 2px 8px; border-radius: 5px; font-size: 12px; margin: 0 2px; }
+.tiger-opt { background: #FCEBEB; color: #A32D2D; }
+.peacock-opt { background: #FAEEDA; color: #854F0B; }
+.koala-opt { background: #EAF3DE; color: #3B6D11; }
+.owl-opt { background: #E6F1FB; color: #185FA5; }
+
+.instruction { background: #eef4fc; border-left: 4px solid #378ADD; padding: 12px 16px; border-radius: 8px; font-size: 13px; margin-bottom: 16px; line-height: 1.8; }
+
+/* MBTI */
+.mbti-dims { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
+.mbti-dim { text-align: center; background: #fff; border-radius: 8px; padding: 14px 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+.mbti-letter { display: inline-block; padding: 5px 14px; border-radius: 6px; font-weight: 600; font-size: 14px; margin: 3px 0; }
+.mbti-vs { font-size: 11px; color: #aaa; font-weight: 600; }
+.mbti-note { font-size: 11px; color: #888; margin-top: 5px; }
+.mbti-q { padding: 10px 0; border-bottom: 1px solid #f0f0f0; line-height: 1.9; font-size: 13px; }
+.mbti-q:last-child { border-bottom: none; }
+.choice-a { display: inline-block; background: #E6F1FB; color: #185FA5; padding: 3px 14px; border-radius: 5px; font-size: 12px; margin-right: 10px; }
+.choice-b { display: inline-block; background: #EEEDFE; color: #534AB7; padding: 3px 14px; border-radius: 5px; font-size: 12px; }
+
+.scoring { background: #fafafa; border-radius: 8px; padding: 14px 18px; font-size: 12.5px; color: #666; line-height: 1.9; border: 1px solid #eee; }
+.scoring strong { color: #333; }
+
+/* Footer */
+.footer { text-align: center; padding: 24px; color: #aaa; font-size: 12px; }
+.footer a { color: #378ADD; }
+
+@media print {
+  body { background: #fff; } .tabs { display: none; } .tab-panel { display: block !important; page-break-inside: avoid; }
+  .q-block { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- Header -->
+<div class="header">
+  <h1>🏠 星河智善 · 人才测评问卷系统</h1>
+  <p>内部员工专业版 | Professional Internal Assessment v2.0</p>
+  <div class="meta">星河智善生活集团 · 人力资源部 · 机密文件</div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab(0)">🏠 人才综合评估</button>
+  <button class="tab-btn" onclick="switchTab(1)">🔵 大五人格 Big Five</button>
+  <button class="tab-btn" onclick="switchTab(2)">🐯 PDP 性格测试</button>
+  <button class="tab-btn" onclick="switchTab(3)">💎 MBTI 人格测试</button>
+</div>
+
+<!-- ==================== TAB 0: 人才综合评估 ==================== -->
+<div class="tab-panel active" id="panel-0">
+
+<div class="section-head">
+  <div class="section-icon" style="background:#E6F1FB;">🏠</div>
+  <div class="section-info">
+    <h2>人才综合评估问卷</h2>
+    <p>涵盖职业能力、工作态度、团队协作、发展潜力四大模块 — 共40题</p>
+  </div>
+</div>
+
+<div class="tags">
+  <span class="tag" style="background:#E6F1FB;color:#185FA5;">职业能力 (12题)</span>
+  <span class="tag" style="background:#EAF3DE;color:#3B6D11;">工作态度 (10题)</span>
+  <span class="tag" style="background:#FAEEDA;color:#854F0B;">团队协作 (10题)</span>
+  <span class="tag" style="background:#EEEDFE;color:#534AB7;">发展潜力 (8题)</span>
+</div>
+
+<p style="font-size:13px;color:#888;margin-bottom:16px;padding-left:4px;">
+  <b>说明：</b>请根据您的实际情况，对以下描述进行评分（1=完全不符合 → 5=完全符合）
+</p>
+
+<!-- 模块一：职业能力 -->
+<div class="q-block">
+  <div class="q-title">模块一：职业能力 (第1-12题)</div>
+  <div class="q-item"><b>1.</b> 我能够独立完成本职工作范围内的核心任务<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>2.</b> 遇到专业问题时，我能快速找到解决方案或寻求有效支持<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>3.</b> 我能主动学习新知识、新技能以适应工作变化<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>4.</b> 我的工作产出质量稳定，出错率低<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>5.</b> 我具备良好的时间管理能力，能按时完成任务<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>6.</b> 我能有效处理多任务并行的工作压力<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>7.</b> 我能够清晰、准确地表达自己的想法和工作进展<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>8.</b> 我善于总结工作经验并形成可复用的方法<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>9.</b> 我对行业动态和公司业务有基本的了解<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>10.</b> 我能够熟练使用岗位所需的专业工具和系统<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>11.</b> 面对复杂问题时，我能进行系统性分析和拆解<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>12.</b> 我的创新意识较强，经常提出改进建议<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+</div>
+
+<!-- 模块二：工作态度 -->
+<div class="q-block">
+  <div class="q-title">模块二：工作态度 (第13-22题)</div>
+  <div class="q-item"><b>13.</b> 我对公司的发展目标和价值观高度认同<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>14.</b> 即使没有监督，我也能保持高标准的工作质量<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>15.</b> 我对待工作认真负责，不推诿责任<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>16.</b> 我能够接受合理的批评并及时改进<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>17.</b> 我具有强烈的责任心，对工作结果负责到底<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>18.</b> 我遵守公司规章制度和职业道德准则<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>19.</b> 我积极主动地承担额外工作任务<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>20.</b> 面对困难和挫折时，我能保持积极的心态<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>21.</b> 我注重细节，追求工作的精益求精<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>22.</b> 我愿意为公司长远发展做出个人贡献<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+</div>
+
+<!-- 模块三：团队协作 -->
+<div class="q-block">
+  <div class="q-title">模块三：团队协作 (第23-32题)</div>
+  <div class="q-item"><b>23.</b> 我能与不同性格的同事顺畅合作<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>24.</b> 在团队合作中，我乐于分享信息和资源<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>25.</b> 当团队成员遇到困难时，我愿意主动提供帮助<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>26.</b> 我能够妥善处理团队内部的分歧和冲突<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>27.</b> 我尊重他人的观点，即使与我的看法不同<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>28.</b> 我在跨部门协作中表现出良好的配合度<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>29.</b> 我能够为了团队目标适当调整自己的工作方式<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>30.</b> 我在团队讨论中能贡献有价值的想法<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>31.</b> 我善于倾听他人意见，不急于打断或否定<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>32.</b> 我认可团队的成就，不单独邀功<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+</div>
+
+<!-- 模块四：发展潜力 -->
+<div class="q-block">
+  <div class="q-title">模块四：发展潜力 (第33-40题)</div>
+  <div class="q-item"><b>33.</b> 我对自己的职业发展有清晰的规划<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>34.</b> 我渴望承担更有挑战性的工作职责<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>35.</b> 我具备培养新人或指导同事的能力/意愿<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>36.</b> 我能够从失败中吸取经验教训<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>37.</b> 我具有较强的适应能力和抗压能力<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>38.</b> 我展现出一定的领导力潜质<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>39.</b> 我关注行业趋势并思考其对公司的影响<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+  <div class="q-item"><b>40.</b> 我愿意接受轮岗或外派等发展机会<div class="scale"><span>1 完全不符合</span><span>2</span><span>3 一般</span><span>4</span><span>5 完全符合</span></div></div>
+</div>
+
+<div class="scoring">
+  <strong>计分说明：</strong><br>
+  • 每题1-5分 | 总分范围40-200分<br>
+  • 职业能力模块(12-60分) | 工作态度模块(10-50分) | 团队协作模块(10-50分) | 发展潜力模块(8-40分)<br><br>
+  <strong>等级标准：</strong><br>
+  • 优秀 ≥ 总分85%（≥170分）| 良好 70%-85%（140-169分）<br>
+  • 合格 55%-70%（110-139分）| 待提升 &lt;55%（&lt;110分）
+</div>
+
+</div><!-- end panel 0 -->
+
+
+<!-- ==================== TAB 1: 大五人格 Big Five ==================== -->
+<div class="tab-panel" id="panel-1">
+
+<div class="section-head">
+  <div class="section-icon" style="background:#E6F1FB;">🔵</div>
+  <div class="section-info">
+    <h2>大五职业性格测评 (Big Five / OCEAN)</h2>
+    <p>国际经典人格模型 · 5维度 × 8题 = 40题 · 李克特5点量表</p>
+  </div>
+</div>
+
+<div class="ocean-row">
+  <div class="ocean-card" style="border-top-color:#378ADD;"><h4 style="color:#185FA5;">O 开放性 Openness</h4><p>想象力、好奇心、审美、创造性思维</p></div>
+  <div class="ocean-card" style="border-top-color:#0F6E56;"><h4 style="color:#085041;">C 尽责性 Conscientiousness</h4><p>自律、条理性、责任感、成就动机</p></div>
+  <div class="ocean-card" style="border-top-color:#BA7517;"><h4 style="color:#854F0B;">E 外向性 Extraversion</h4><p>社交活跃、精力充沛、积极情绪、果断</p></div>
+  <div class="ocean-card" style="border-top-color:#D4537E;"><h4 style="color:#993556;">A 宜人性 Agreeableness</h4><p>信任、利他、顺从、ǫѷ、同理心</p></div>
+  <div class="ocean-card" style="border-top-color:#993C1D;"><h4 style="color:#712B13;">N 神经质 Neuroticism</h4><p>焦虑、敌意、抑郁、自我意识、脆弱性</p></div>
+</div>
+
+<p style="font-size:13px;color:#888;margin-bottom:16px;">
+  <b>说明：</b>请根据您的真实情况评分（1=非常不同意 → 5=非常同意），标注"反向计分"的题目需要反转计分
+</p>
+
+<!-- O 开放性 -->
+<div class="q-block">
+  <div class="q-title" style="border-left-color:#378ADD;">O维度 — 开放性 (第1-8题)</div>
+  <div class="q-item"><b>O1.</b> 我喜欢尝试新鲜事物和体验<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>O2.</b> 我经常沉浸在抽象的思考和想象中<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>O3.</b> 我欣赏艺术和自然界的美<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>O4.</b> 我对各种思想持开放态度<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>O5.</b> 我倾向于按传统方式做事 <span class="reverse">(反向计分)</span><div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>O6.</b> 我喜欢阅读各类书籍来拓展视野<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>O7.</b> 我常常有新奇的想法和创意<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>O8.</b> 我认为理性分析比直觉更重要 <span class="reverse">(反向计分)</span><div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+</div>
+
+<!-- C 尽责性 -->
+<div class="q-block">
+  <div class="q-title" style="border-left-color:#0F6E56;">C维度 — 尽责性 (第9-16题)</div>
+  <div class="q-item"><b>C9.</b> 我做事总是提前做好准备<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>C10.</b> 我会严格按照计划执行任务<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>C11.</b> 我注重细节，追求完美<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>C12.</b> 我能很好地控制自己的冲动<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>C13.</b> 我有时会把事情拖到最后一刻 <span class="reverse">(反向计分)</span><div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>C14.</b> 我总是把物品摆放得井井有条<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>C15.</b> 我对自己的工作成果有高标准要求<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>C16.</b> 我是一个可靠的人，说到做到<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+</div>
+
+<!-- E 外向性 -->
+<div class="q-block">
+  <div class="q-title" style="border-left-color:#BA7517;">E维度 — 外向性 (第17-24题)</div>
+  <div class="q-item"><b>E17.</b> 在社交场合中我是活跃的那一个<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>E18.</b> 我很容易感到精力充沛和兴奋<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>E19.</b> 我喜欢成为众人瞩目的焦点<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>E20.</b> 我在人群中感到自在舒适<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>E21.</b> 我更喜欢独处而不是参加聚会 <span class="reverse">(反向计分)</span><div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>E22.</b> 我说话声音洪亮、表达直接<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>E23.</b> 我善于发起对话和结交新朋友<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>E24.</b> 我做事果断，行动力强<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+</div>
+
+<!-- A 宜人性 -->
+<div class="q-block">
+  <div class="q-title" style="border-left-color:#D4537E;">A维度 — 宜人性 (第25-32题)</div>
+  <div class="q-item"><b>A25.</b> 我对他人的感受很敏感<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>A26.</b> 我愿意放下自己的事情去帮助别人<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>A27.</b> 我对人信任，不太怀疑别人的动机<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>A28.</b> 即使被冒犯，我也尽量不报复<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>A29.</b> 我有时对别人比较冷淡 <span class="reverse">(反向计分)</span><div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>A30.</b> 我谦虚低调，不喜欢炫耀自己<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>A31.</b> 我倾向于合作而非竞争<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>A32.</b> 我能站在对方的角度理解问题<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+</div>
+
+<!-- N 神经质 -->
+<div class="q-block">
+  <div class="q-title" style="border-left-color:#993C1D;">N维度 — 神经质 (第33-40题)</div>
+  <div class="q-item"><b>N33.</b> 我经常感到紧张和焦虑<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>N34.</b> 我的情绪容易受到周围环境的影响<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>N35.</b> 我时常担心可能会出问题的事情<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>N36.</b> 我很容易感到沮丧或低落<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>N37.</b> 我通常能保持冷静平和 <span class="reverse">(反向计分)</span><div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>N38.</b> 我对自己缺乏信心<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>N39.</b> 面对压力时我容易情绪失控<div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+  <div class="q-item"><b>N40.</b> 我很少感到不安或烦躁 <span class="reverse">(反向计分)</span><div class="scale"><span>1 非常不同意</span><span>2</span><span>3 中立</span><span>4</span><span>5 非常同意</span></div></div>
+</div>
+
+<div class="scoring">
+  <strong>计分方式：</strong><br>
+  • 正向题直接计原始分(1-5) | 反向题用6减去原始分(即选1得5分, ѡ5得1分)<br>
+  • 每个维度总分范围 8-40分<br><br>
+  <strong>结果解读：</strong><br>
+  • 高分 ≥33（显著偏高）| 中高 28-32（偏高）<br>
+  • 中等 20-27（正常范围）| 中低 14-19（偏低）| 低分 ≤13（显著偏低）
+</div>
+
+</div><!-- end panel 1 -->
+
+
+<!-- ==================== TAB 2: PDP 性格测试 ==================== -->
+<div class="tab-panel" id="panel-2">
+
+<div class="section-head">
+  <div class="section-icon" style="background:#FAECE7;">🐯</div>
+  <div class="section-info">
+    <h2>PDP 性格测试</h2>
+    <p>Professional Dynometric Program · 5种动物类型 · 强迫选择法</p>
+  </div>
+</div>
+
+<div class="pdp-row">
+  <div class="pdp-card" style="background:#FCEBEB;border:1px solid #F09595;"><div class="icon">🐯</div><h4 style="color:#A32D2D;">老虎型 Tiger</h4><span>支配型 / 目标导向 / 结果驱动</span></div>
+  <div class="pdp-card" style="background:#FAEEDA;border:1px solid #EF9F27;"><div class="icon">🦚</div><h4 style="color:#854F0B;">孔雀型 Peacock</h4><span>表达型 / 社交达人 / 影响力强</span></div>
+  <div class="pdp-card" style="background:#EAF3DE;border:1px solid #97C459;"><div class="icon">🐨</div><h4 style="color:#3B6D11;">考拉型 Koala</h4><span>耐心型 / 和谐稳定 / 支持者</span></div>
+  <div class="pdp-card" style="background:#E6F1FB;border:1px solid #85B7EB;"><div class="icon">🦉</div><h4 style="color:#185FA5;">猫头鹰型 Owl</h4><span>精确型 / 数据导向 / 分析专家</span></div>
+  <div class="pdp-card" style="background:#EEEDFE;border:1px solid #AFA9EC;"><div class="icon">🦎</div><h4 style="color:#534AB7;">变色龙型 Chameleon</h4><span>整合型 / 弹性灵活 / 变通高手</span></div>
+</div>
+
+<div class="instruction">
+  <b>答题说明：</b>每组4个词/句中，请选择<strong>最符合你</strong>的打4分，<strong>最不符合你</strong>的打1分，中间两项分别打3分和2分。<br>
+  每组总分固定为10分。请凭第一直觉快速作答，不要过度思考。
+</div>
+
+<!-- 第一组：词汇 -->
+<div class="q-block">
+  <div class="q-title" style="border-left-color:#993C1D;">第一组：词汇偏好 (P1-P10)</div>
+  <div class="pdp-q"><b>P1.</b> <span class="pdp-opt tiger-opt">果断</span> / <span class="pdp-opt peacock-opt">热情</span> / <span class="pdp-opt koala-opt">温和</span> / <span class="pdp-opt owl-opt">严谨</span></div>
+  <div class="pdp-q"><b>P2.</b> <span class="pdp-opt tiger-opt">掌控</span> / <span class="pdp-opt peacock-opt">表达</span> / <span class="pdp-opt koala-opt">倾听</span> / <span class="pdp-opt owl-opt">分析</span></div>
+  <div class="pdp-q"><b>P3.</b> <span class="pdp-opt tiger-opt">竞争</span> / <span class="pdp-opt peacock-opt">感染力</span> / <span class="pdp-opt koala-opt">包容</span> / <span class="pdp-opt owl-opt">精准</span></div>
+  <div class="pdp-q"><b>P4.</b> <span class="pdp-opt tiger-opt">效率</span> / <span class="pdp-opt peacock-opt">魅力</span> / <span class="pdp-opt koala-opt">稳重</span> / <span class="pdp-opt owl-opt">逻辑</span></div>
+  <div class="pdp-q"><b>P5.</b> <span class="pdp-opt tiger-opt">野心</span> / <span class="pdp-opt peacock-opt">创意</span> / <span class="pdp-opt koala-opt">忠诚</span> / <span class="pdp-opt owl-opt">规范</span></div>
+  <div class="pdp-q"><b>P6.</b> <span class="pdp-opt tiger-opt">直率</span> / <span class="pdp-opt peacock-opt">活泼</span> / <span class="pdp-opt koala-opt">耐心</span> / <span class="pdp-opt owl-opt">细致</span></div>
+  <div class="pdp-q"><b>P7.</b> <span class="pdp-opt tiger-opt">冒险</span> / <span class="pdp-opt peacock-opt">乐观</span> / <span class="pdp-opt koala-opt">随和</span> / <span class="pdp-opt owl-opt">审慎</span></div>
+  <div class="pdp-q"><b>P8.</b> <span class="pdp-opt tiger-opt">强势</span> / <span class="pdp-opt peacock-opt">亲和</span> / <span class="pdp-opt koala-opt">ǫѷ</span> / <span class="pdp-opt owl-opt">理性</span></div>
+  <div class="pdp-q"><b>P9.</b> <span class="pdp-opt tiger-opt">领导力</span> / <span class="pdp-opt peacock-opt">说服力</span> / <span class="pdp-opt koala-opt">协调力</span> / <span class="pdp-opt owl-opt">洞察力</span></div>
+  <div class="pdp-q"><b>P10.</b> <span class="pdp-opt tiger-opt">成就感</span> / <span class="pdp-opt peacock-opt">认同感</span> / <span class="pdp-opt koala-opt">安全感</span> / <span class="pdp-opt owl-opt">正确感</span></div>
+</div>
+
+<!-- 第二组：情境 -->
+<div class="q-block">
+  <div class="q-title" style="border-left-color:#993C1D;">第二组：情境行为 (P11-P20)</div>
+  <div class="pdp-q"><b>P11.</b> <span class="pdp-opt tiger-opt">我喜欢主导会议方向</span> / <span class="pdp-opt peacock-opt">我喜欢活跃会议气氛</span> / <span class="pdp-opt koala-opt">我喜欢听取各方意见</span> / <span class="pdp-opt owl-opt">我喜欢整理会议要点</span></div>
+  <div class="pdp-q"><b>P12.</b> <span class="pdp-opt tiger-opt">做决定时我靠直觉和魄力</span> / <span class="pdp-opt peacock-opt">做决定时我考虑对他人的影响</span> / <span class="pdp-opt koala-opt">做决定时我希望大家都同意</span> / <span class="pdp-opt owl-opt">做决定时我要充分的数据支撑</span></div>
+  <div class="pdp-q"><b>P13.</b> <span class="pdp-opt tiger-opt">面对压力我会迎难而上</span> / <span class="pdp-opt peacock-opt">面对压力我会寻求倾诉</span> / <span class="pdp-opt koala-opt">面对压力我会默默承受</span> / <span class="pdp-opt owl-opt">面对压力我会制定应对方案</span></div>
+  <div class="pdp-q"><b>P14.</b> <span class="pdp-opt tiger-opt">我最不能忍受效率低下</span> / <span class="pdp-opt peacock-opt">我最不能忍受被忽视</span> / <span class="pdp-opt koala-opt">我最不能忍受冲突对抗</span> / <span class="pdp-opt owl-opt">我最不能忍受逻辑混乱</span></div>
+  <div class="pdp-q"><b>P15.</b> <span class="pdp-opt tiger-opt">我的沟通风格是命令式</span> / <span class="pdp-opt peacock-opt">我的沟通风格是感染式</span> / <span class="pdp-opt koala-opt">我的沟通风格是商议式</span> / <span class="pdp-opt owl-opt">我的沟通风格是说明式</span></div>
+  <div class="pdp-q"><b>P16.</b> <span class="pdp-opt tiger-opt">工作中我最看重结果</span> / <span class="pdp-opt peacock-opt">工作中我最看重人际关系</span> / <span class="pdp-opt koala-opt">工作中我最看重团队氛围</span> / <span class="pdp-opt owl-opt">工作中我最看重流程规范</span></div>
+  <div class="pdp-q"><b>P17.</b> <span class="pdp-opt tiger-opt">冲突发生时我正面交锋</span> / <span class="pdp-opt peacock-opt">冲突发生时我用幽默化解</span> / <span class="pdp-opt koala-opt">冲突发生时我回避退让</span> / <span class="pdp-opt owl-opt">冲突发生时我理性分析</span></div>
+  <div class="pdp-q"><b>P18.</b> <span class="pdp-opt tiger-opt">我认为成功就是达成目标</span> / <span class="pdp-opt peacock-opt">我认为成功就是获得认可</span> / <span class="pdp-opt koala-opt">我认为成功就是和谐相处</span> / <span class="pdp-opt owl-opt">我认为成功就是把事情做正确</span></div>
+  <div class="pdp-q"><b>P19.</b> <span class="pdp-opt tiger-opt">我的优势是执行力强</span> / <span class="pdp-opt peacock-opt">我的优势是人际交往能力强</span> / <span class="pdp-opt koala-opt">我的优势是稳定性好</span> / <span class="pdp-opt owl-opt">我的优势是思维缜密</span></div>
+  <div class="pdp-q"><b>P20.</b> <span class="pdp-opt tiger-opt">我的弱点是过于强势</span> / <span class="pdp-opt peacock-opt">我的弱点是注意力分散</span> / <span class="pdp-opt koala-opt">我的弱点是缺乏主动性</span> / <span class="pdp-opt owl-opt">我的弱点是过于挑剔</span></div>
+</div>
+
+<!-- 第三组：行为偏好 -->
+<div class="q-block">
+  <div class="q-title" style="border-left-color:#993C1D;">第三组：行为偏好 (P21-P25)</div>
+  <div class="pdp-q"><b>P21.</b> <span class="pdp-opt tiger-opt">我喜欢挑战高难度的任务</span> / <span class="pdp-opt peacock-opt">我喜欢参与多样化的活动</span> / <span class="pdp-opt koala-opt">我喜欢按部就班地工作</span> / <span class="pdp-opt owl-opt">我喜欢深入研究某个领域</span></div>
+  <div class="pdp-q"><b>P22.</b> <span class="pdp-opt tiger-opt">我习惯快节奏的生活方式</span> / <span class="pdp-opt peacock-opt">我习惯丰富多彩的生活</span> / <span class="pdp-opt koala-opt">我习惯平稳规律的生活</span> / <span class="pdp-opt owl-opt">我习惯有序规划的生活</span></div>
+  <div class="pdp-q"><b>P23.</b> <span class="pdp-opt tiger-opt">团队中我常扮演推动者角色</span> / <span class="pdp-opt peacock-opt">团队中我常扮演激励者角色</span> / <span class="pdp-opt koala-opt">团队中我常扮演协调者角色</span> / <span class="pdp-opt owl-opt">团队中我常扮演参谋者角色</span></div>
+  <div class="pdp-q"><b>P24.</b> <span class="pdp-opt tiger-opt">学习新东西时我喜欢边做边学</span> / <span class="pdp-opt peacock-opt">学习新东西时我喜欢互动交流</span> / <span class="pdp-opt koala-opt">学习新东西时我喜欢循序渐进</span> / <span class="pdp-opt owl-opt">学习新东西时我喜欢系统研读</span></div>
+  <div class="pdp-q"><b>P25.</b> <span class="pdp-opt tiger-opt">被表扬时我希望被肯定成就</span> / <span class="pdp-opt peacock-opt">被表扬时我希望被关注亮点</span> / <span class="pdp-opt koala-opt">被表扬时我希望被认可付出</span> / <span class="pdp-opt owl-opt">被表扬时我希望被确认准确</span></div>
+</div>
+
+<div class="scoring">
+  <strong>计分方式：</strong><br>
+  • 将每种动物类型的分数分别相加 | 满分100分 | 得分最高的为主要类型<br>
+  • 每组4项分配4/3/2/1分，总和固定10分<br><br>
+  <strong>结果判定：</strong><br>
+  • 主型明确：最高分 ≥28 且与第二名差距 >3分<br>
+  • 混合型：前两名差距 ≤3分，如"老虎-孔雀混合型"<br>
+  • 变色龙型：五项得分较均衡（极差 ≤5分）
+</div>
+
+</div><!-- end panel 2 -->
+
+
+<!-- ==================== TAB 3: MBTI 人格测评 ==================== -->
+<div class="tab-panel" id="panel-3">
+
+<div class="section-head">
+  <div class="section-icon" style="background:#EEEDFE;">💎</div>
+  <div class="section-info">
+    <h2>MBTI 人格测评</h2>
+    <p>Myers-Briggs Type Indicator · 4维度 × 8题 = 32题 · 强制二选一</p>
+  </div>
+</div>
+
+<div class="mbti-dims">
+  <div class="mbti-dim">
+    <div class="mbti-letter" style="background:#E6F1FB;color:#185FA5;">E 外倾</div>
+    <div class="mbti-vs">vs</div>
+    <div class="mbti-letter" style="background:#EEEDFE;color:#534AB7;">I 内倾</div>
+    <div class="mbti-note">能量来源方向</div>
+  </div>
+  <div class="mbti-dim">
+    <div class="mbti-letter" style="background:#EAF3DE;color:#3B6D11;">S 感觉</div>
+    <div class="mbti-vs">vs</div>
+    <div class="mbti-letter" style="background:#FAEEDA;color:#854F0B;">N 直觉</div>
+    <div class="mbti-note">信息获取方式</div>
+  </div>
+  <div class="mbti-dim">
+    <div class="mbti-letter" style="background:#FAECE7;color:#993C1D;">T 思考</div>
+    <div class="mbti-vs">vs</div>
+    <div class="mbti-letter" style="background:#FBEAF0;color:#993556;">F 情感</div>
+    <div class="mbti-note">决策判断方式</div>
+  </div>
+  <div class="mbti-dim">
+    <div class="mbti-letter" style="background:#E6F1FB;color:#0C447C;">J 判断</div>
+    <div class="mbti-vs">vs</div>
+    <div class="mbti-letter" style="background:#EEEDFE;color:#993556;">P 感知</div>
+    <div class="mbti-note">生活方式偏好</div>
+  </div>
+</div>
+
+<div class="instruction">
+  <b>答题说明：</b>每题只有A/B两个选项，<strong>必须二选一</strong>，不可跳过。<br>
+  请选择在大多数情况下更倾向的那个选项，即使两者都有些符合。
+</div>
+
+<!-- E vs I -->
+<div class="q-block">
+  <div class="q-title" style="border-left-color:#185FA5;">E vs I 维度 — 能量来源 (第1-8题)</div>
+  <div class="mbti-q"><b>M1.</b> 社交聚会后，你通常感觉：<br><span class="choice-a">A. 精力充沛，还想继续</span><span class="choice-b">B. 需要独自休息恢复能量</span></div>
+  <div class="mbti-q"><b>M2.</b> 你更倾向于：<br><span class="choice-a">A. 先行动再思考</span><span class="choice-b">B. 先思考再行动</span></div>
+  <div class="mbti-q"><b>M3.</b> 在陌生的环境中，你通常会：<br><span class="choice-a">A. 主动与人交流</span><span class="choice-b">B. 先观察再做反应</span></div>
+  <div class="mbti-q"><b>M4.</b> 你更喜欢哪种工作方式：<br><span class="choice-a">A. 与团队一起头脑风暴</span><span class="choice-b">B. 独自深入钻研问题</span></div>
+  <div class="mbti-q"><b>M5.</b> 别人形容你更像是：<br><span class="choice-a">A. 开朗健谈的人</span><span class="choice-b">B. 沉静内敛的人</span></div>
+  <div class="mbti-q"><b>M6.</b> 遇到问题时，你倾向于：<br><span class="choice-a">A. 通过讨论理清思路</span><span class="choice-b">B. 通过独立思考找到答案</span></div>
+  <div class="mbti-q"><b>M7.</b> 周末你更愿意：<br><span class="choice-a">A. 参加朋友聚会或户外活动</span><span class="choice-b">B. 在家看书、追剧或独处</span></div>
+  <div class="mbti-q"><b>M8.</b> 在会议上你更可能：<br><span class="choice-a">A. 积极发言表达观点</span><span class="choice-b">B. 认真倾听偶尔补充</span></div>
+</div>
+
+<!-- S vs N -->
+<div class="q-block">
+  <div class="q-title" style="border-left-color:#3B6D11;">S vs N 维度 — 信息获取 (第9-16题)</div>
+  <div class="mbti-q"><b>M9.</b> 你更信任：<br><span class="choice-a">A. 已知的事实和经验</span><span class="choice-b">B. 直觉和预感</span></div>
+  <div class="mbti-q"><b>M10.</b> 阅读时你更注意：<br><span class="choice-a">A. 具体的细节和数据</span><span class="choice-b">B. 整体含义和隐含信息</span></div>
+  <div class="mbti-q"><b>M11.</b> 你更喜欢：<br><span class="choice-a">A. 实际可行的方案</span><span class="choice-b">B. 有创意和新颖的想法</span></div>
+  <div class="mbti-q"><b>M12.</b> 别人觉得你的思维更偏向：<br><span class="choice-a">A. 务实具体</span><span class="choice-b">B. 抽象宏观</span></div>
+  <div class="mbti-q"><b>M13.</b> 学习新技能时你喜欢：<br><span class="choice-a">A. 按步骤一步步操作练习</span><span class="choice-b">B. 先了解原理再自由探索</span></div>
+  <div class="mbti-q"><b>M14.</b> 描述一件事物时你会侧重：<br><span class="choice-a">A. 它的实际特征和用途</span><span class="choice-b">B. 它的可能性和象征意义</span></div>
+  <div class="mbti-q"><b>M15.</b> 你更关注：<br><span class="choice-a">A. 当前正在发生的事</span><span class="choice-b">B. 未来可能发生的事</span></div>
+  <div class="mbti-q"><b>M16.</b> 你认为常规的意义在于：<br><span class="choice-a">A. 保证效率和稳定性</span><span class="choice-b">B. 可以被优化和突破</span></div>
+</div>
+
+<!-- T vs F -->
+<div class="q-block">
+  <div class="q-title" style="border-left-color:#993C1D;">T vs F 维度 — 决策方式 (第17-24题)</div>
+  <div class="mbti-q"><b>M17.</b> 做重要决定时你更看重：<br><span class="choice-a">A. 逻辑分析和客观标准</span><span class="choice-b">B. 个人价值观和他人的感受</span></div>
+  <div class="mbti-q"><b>M18.</b> 你更容易被什么打动：<br><span class="choice-a">A. 合理有力的论证</span><span class="choice-b">B. 真诚的情感表达</span></div>
+  <div class="mbti-q"><b>M19.</b> 给同事提反馈时你倾向于：<br><span class="choice-a">A. 直接指出问题和改进建议</span><span class="choice-b">B. 先肯定优点再委婉提出建议</span></div>
+  <div class="mbti-q"><b>M20.</b> 你认为"公平"更多意味着：<br><span class="choice-a">A. 一视同仁、规则统一</span><span class="choice-b">B. 因人而异、特殊情况特殊对待</span></div>
+  <div class="mbti-q"><b>M21.</b> 冲突发生时你更关注：<br><span class="choice-a">A. 谁对谁错、事实真相</span><span class="choice-b">B. 各方感受、关系修复</span></div>
+  <div class="mbti-q"><b>M22.</b> 你认为一个好的领导者应该更注重：<br><span class="choice-a">A. 效率和绩效</span><span class="choice-b">B. 团队士气和员工关怀</span></div>
+  <div class="mbti-q"><b>M23.</b> 别人评价你更偏向：<br><span class="choice-a">A. 理性客观、就事论事</span><span class="choice-b">B. 温和体贴、富有同情心</span></div>
+  <div class="mbti-q"><b>M24.</b> 在团队项目中如果有人掉链子，你觉得应该：<br><span class="choice-a">A. 按制度处理，该问责就问责</span><span class="choice-b">B. 先了解原因，给予支持和机会</span></div>
+</div>
+
+<!-- J vs P -->
+<div class="q-block">
+  <div class="q-title" style="border-left-color:#0C447C;">J vs P 维度 — 生活方式 (第25-32题)</div>
+  <div class="mbti-q"><b>M25.</b> 你的办公桌通常是：<br><span class="choice-a">A. 整洁有序、井井有条</span><span class="choice-b">B. 看起来乱但我知道在哪</span></div>
+  <div class="mbti-q"><b>M26.</b> 制定旅行计划时你更倾向于：<br><span class="choice-a">A. 详细规划好每天的行程</span><span class="choice-b">B. 大概定个方向，灵活安排</span></div>
+  <div class="mbti-q"><b>M27.</b> 截止日期临近时，你通常会：<br><span class="choice-a">A. 提前完成留有余量</span><span class="choice-b">B. 在最后时刻冲刺完成</span></div>
+  <div class="mbti-q"><b>M28.</b> 面对变化你更倾向于：<br><span class="choice-a">A. 尽快恢复秩序和计划</span><span class="choice-b">B. 保持开放看看有什么新可能</span></div>
+  <div class="mbti-q"><b>M29.</b> 你更喜欢哪种状态：<br><span class="choice-a">A. 事情都已确定、可以划掉待办清单</span><span class="choice-b">B. 事情保持开放、随时可以有新的选项</span></div>
+  <div class="mbti-q"><b>M30.</b> 如果项目需求突然变更：<br><span class="choice-a">A. 我会感到不安，希望尽快重新规划</span><span class="choice-b">B. 我觉得挺有意思，适应起来不难</span></div>
+  <div class="mbti-q"><b>M31.</b> 你认为自己是：<br><span class="choice-a">A. 计划性强的人</span><span class="choice-b">B. 随性灵活的人</span></div>
+  <div class="mbti-q"><b>M32.</b> 完成一项任务后你更想：<br><span class="choice-a">A. 马上开始下一项计划好的任务</span><span class="choice-b">B. 先放松一下，享受完成的满足感</span></div>
+</div>
+
+<div class="scoring">
+  <strong>计分方式：</strong><br>
+  • 选择A则左侧字母+1分 | 选择B则右侧字母+1分 | 每个维度最高8分<br>
+  • 每个维度取得分高的字母，组合成4字母代码（如ESTJ、INFP等）<br><br>
+  <strong>16种人格类型：</strong><br>
+  • <b>分析家组：</b>INTJ（建筑师）、INTP（逻辑学家）、ENTJ（指挥官）、ENTP（辩论家）<br>
+  • <b>外交家组：</b>INFJ（提倡者）、INFP（调停者）、ENFJ（主人公）、ENFP（竞选者）<br>
+  • <b>守护者组：</b>ISTJ（物流师）、ISFJ（守卫者）、ESTJ（总经理）、ESFJ（执政官）<br>
+  • <b>探险家组：</b>ISTP（鉴赏家）、ISFP（探险家）、ESTP（企业家）、ESFP（表演者）
+</div>
+
+</div><!-- end panel 3 -->
+
+<div class="footer">
+  <p>星河智善生活集团 · 人力资源部 · 内部使用</p>
+  <p style="margin-top:4px;">本问卷基于国际主流心理学理论设计，仅供组织发展与人才培养参考</p>
+</div>
+
+</div><!-- end container -->
+
+<script>
+function switchTab(index) {
+  document.querySelectorAll('.tab-panel').forEach(function(p, i) {
+    p.classList.toggle('active', i === index);
+  });
+  document.querySelectorAll('.tab-btn').forEach(function(b, i) {
+    b.classList.toggle('active', i === index);
+  });
+}
+</script>
+</body>
+</html>
