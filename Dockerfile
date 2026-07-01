@@ -23,5 +23,6 @@ WORKDIR /app
 RUN python manage.py collectstatic --noinput
 
 EXPOSE 8080
-CMD ["sh", "-c", "python manage.py migrate --noinput && python manage.py seed_data; gunicorn config.wsgi --log-file - --bind 0.0.0.0:${PORT:-8080}"]
-# Redeploy $(date +%Y%m%d%H%M%S)
+
+# Start gunicorn FIRST, run migrate/seed in background
+CMD ["sh", "-c", "python manage.py migrate --noinput 2>/dev/null & python manage.py seed_data 2>/dev/null & gunicorn config.wsgi --log-file - --bind 0.0.0.0:${PORT:-8080}"]
