@@ -1,11 +1,11 @@
 {
   "build": {
-    "builder": "DOCKERFILE",
-    "buildCommand": null
+    "builder": "NIXPACKS",
+    "buildCommand": "pip install -r requirements.txt && python manage.py collectstatic --noinput"
   },
   "deploy": {
+    "startCommand": "gunicorn config.wsgi --log-file - --bind 0.0.0.0:$PORT",
     "restartPolicyType": "ON_FAILURE",
-    "startCommand": null,
     "healthcheckPath": "/health/"
   }
 }
