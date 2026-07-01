@@ -16,6 +16,7 @@ export const useAuthStore = defineStore('auth', {
       this.user = r.data.user
       localStorage.setItem('user', JSON.stringify(this.user))
     },
-    logout() { this.token = ''; this.user = null; localStorage.removeItem('token'); localStorage.removeItem('user') }
+    async changePassword(oldPwd, newPwd) { const r = await api.post('/change-password/', { old_password: oldPwd, new_password: newPwd }); return r },
+  logout() { this.token = ''; this.user = null; localStorage.removeItem('token'); localStorage.removeItem('user') }
   }
 })
