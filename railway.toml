@@ -1,0 +1,7 @@
+# Railway configuration
+builder = "nixpacks"
+startCommand = "gunicorn config.wsgi --log-file - --bind 0.0.0.0:$PORT"
+healthcheckPath = "/health/"
+
+[deploy]
+restartPolicyType = "ON_FAILURE"
