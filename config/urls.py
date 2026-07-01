@@ -56,8 +56,10 @@ def qrcode_page(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('exam-qrcode/', qrcode_page, name='exam_qrcode'),
-    # Corporate site at root
-    path('', TemplateView.as_view(template_name='corporate_site.html'), name='corporate_home'),
+    # Health check (returns 200 for Railway health probes)
+    path('health/', lambda r: __import__('django.http').http.HttpResponse(b'OK')),
+    # Root: serve Vue SPA
+    path('', spa_view, name='home'),
     # API
     path('api/', include('assessment.urls_api')),
     # Django dashboard
