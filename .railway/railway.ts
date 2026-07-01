@@ -7,7 +7,7 @@ export default defineRailway(() => {
       DATABASE_URL: db.env.DATABASE_URL,
       DJANGO_DEBUG: "False",
       DJANGO_ALLOWED_HOSTS: ".railway.app,.up.railway.app,localhost,127.0.0.1",
-      DJANGO_CSRF_TRUSTED_ORIGINS: "https://*.railway.app,https://*.up.railway.app,http://localhost:8000",
+      DJANGO_CSRF_TRUSTED_ORIGINS: "https://*.railway.app,https://*.up.railway.app,https://xingyunxue-production.up.railway.app,http://localhost:8000",
       DJANGO_SECRET_KEY: preserve(),
     },
   });
