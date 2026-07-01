@@ -12,4 +12,4 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 COPY . .
 RUN python manage.py collectstatic --noinput
 EXPOSE 8080
-CMD python manage.py migrate --noinput 2>/dev/null && python manage.py seed_data 2>/dev/null; gunicorn config.wsgi --log-file - --bind 0.0.0.0:${PORT:-8080}
+CMD gunicorn config.wsgi --log-file - --bind 0.0.0.0:$PORT
