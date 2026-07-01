@@ -17,6 +17,7 @@ const routes = [
   { path: '/branches', name: '分公司管理', component: () => import('@/views/BranchView.vue'), meta: { requiresAuth: true } },
   { path: "/projects", name: "项目管理", component: () => import("@/views/ProjectView.vue"), meta: { requiresAuth: true } },
   { path: '/admins', name: '管理员管理', component: () => import('@/views/AdminView.vue'), meta: { requiresAuth: true } },
+  { path: '/change-password', name: '????', component: () => import('@/views/ChangePasswordView.vue'), meta: { requiresAuth: true } },
 ]
 
 const router = createRouter({ history: createWebHistory(), routes })
